@@ -1,12 +1,14 @@
 import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getName, setName, removeName } from '@/utils/auth'
 
 const user = {
   state: {
     token: getToken(),
     name: '',
     avatar: '',
-    roles: []
+    roles: [],
+    assocId: ''
   },
 
   mutations: {
@@ -21,7 +23,10 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
-    }
+    },
+    SET_ASSOCID: (state, assocId) => {
+      state.assocId = assocId
+    },
   },
 
   actions: {
@@ -30,9 +35,13 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
-          const data = response.data
-          setToken(data.token)
-          commit('SET_TOKEN', data.token)
+          const token = response.result
+          // console.log(response)
+          // console.log(token)
+          setToken(token)
+          setName(userInfo.username)
+          commit('SET_NAME',userInfo.username)
+          commit('SET_TOKEN',token) 
           resolve()
         }).catch(error => {
           reject(error)
@@ -43,15 +52,17 @@ const user = {
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getInfo(state.token).then(response => {
-          const data = response.data
+        const name = getName()
+        getInfo(name).then(response => {
+          const data = response.result
           if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', data.roles)
           } else {
             reject('getInfo: roles must be a non-null array !')
           }
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
+          commit('SET_NAME', data.username)
+          commit('SET_AVATAR', process.env.BASE_API + data.headPortrait) 
+          commit('SET_ASSOCID',response.result.associationId)
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -66,6 +77,7 @@ const user = {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           removeToken()
+          removeName()
           resolve()
         }).catch(error => {
           reject(error)
@@ -78,6 +90,7 @@ const user = {
       return new Promise(resolve => {
         commit('SET_TOKEN', '')
         removeToken()
+        removeName()
         resolve()
       })
     }
