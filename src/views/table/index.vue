@@ -2,9 +2,9 @@
   <div class="app-container">
     <div class="block">
       <span class="demonstration">精彩瞬间</span>
-      <el-carousel height="200px">
-        <el-carousel-item v-for="item in 2" :key="item">
-          <h3>{{ username }}</h3>
+      <el-carousel height="300px" type="card" interval="3000">
+        <el-carousel-item v-for="item in username" :key="item">
+          <img :src=url+item alt="" height="300px" width="500px">
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -18,7 +18,8 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      username : 'adasd'
+      username : "",
+      url: process.env.BASE_API
     };
   },
   created()  {
@@ -31,7 +32,7 @@ export default {
       getAssociationInfo1(){
         getAssociationInfo(this.assocId).then(response =>{
           const data = response.result
-          this.username = data.honors[0]
+          this.username = data.momentImgs
         }).catch(error =>{
           reject(error)
         })
@@ -41,6 +42,14 @@ export default {
 </script>
 
 <style>
+
+.block{
+  width: 1000px;
+  margin: auto;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  color: #606266;
+}
 .el-carousel__item h3 {
   color: #475669;
   font-size: 14px;

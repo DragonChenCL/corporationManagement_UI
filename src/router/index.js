@@ -39,15 +39,15 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/example',
+    path: '/corporation',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
+    redirect: '/corporation/info',
+    name: 'Corporation',
     meta: { title: '社团管理', icon: '社团1' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
+        path: 'info',
+        name: 'Info',
         component: () => import('@/views/table/index'),
         meta: { title: '社团信息', icon: 'table' }
       },

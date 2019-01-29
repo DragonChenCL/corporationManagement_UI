@@ -1,6 +1,7 @@
 <template>
   <div class="dashboard-editor-container">
-    <div class="clearfix">
+    <el-card class="box-card" shadow="hover">
+<div class="clearfix">
       <pan-thumb :image="avatar" style="float: left">
         你的职位是:
         <span
@@ -117,6 +118,8 @@
         </div>
       </div>
     </div>
+    </el-card>
+    
   </div>
 </template>
 
@@ -125,6 +128,7 @@ import { mapGetters } from "vuex";
 import PanThumb from "@/components/PanThumb";
 import { Message } from "element-ui";
 import Mallki from "@/components/TextHoverEffect/Mallki";
+import { parseTime } from "@/utils/index"
 
 export default {
   name: "DashboardEditor",
@@ -162,7 +166,7 @@ export default {
           this.phoneNumber = data.phoneNumber;
           this.association = data.association;
           this.email = data.email;
-          this.birthday = data.birthday;
+          this.birthday = parseTime(data.birthday,'{y}-{m}-{d}');
           this.address = data.address;
           this.qq = data.qq;
           this.college = data.college;
