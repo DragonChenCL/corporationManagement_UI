@@ -10,7 +10,8 @@ module.exports = {
         target: 'http://localhost:8080',
         changeOrigin: true,
         pathRewrite: {
-             '^/user': '/user'
+             '^/user': '/user',
+             '^/assoc': '/assoc'
         }
     }
 },

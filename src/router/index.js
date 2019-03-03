@@ -25,6 +25,17 @@ import Layout from '../views/layout/Layout'
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
+  {
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/redirect/:path*',
+        component: () => import('@/views/redirect/index')
+      }
+    ]
+  },
 
   {
     path: '/',
@@ -35,40 +46,31 @@ export const constantRouterMap = [
     children: [{
       path: 'dashboard',
       component: () => import('@/views/dashboard/index')
-    }]
+}]
   },
 
   {
     path: '/corporation',
     component: Layout,
-    redirect: '/corporation/info',
-    name: 'Corporation',
-    meta: { title: '社团管理', icon: '社团1' },
     children: [
       {
         path: 'info',
         name: 'Info',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/corporation/index'),
         meta: { title: '社团信息', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
       }
     ]
   },
 
   {
-    path: '/form',
+    path: '/peron',
     component: Layout,
     children: [
       {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        path: 'manage',
+        name: 'person',
+        component: () => import('@/views/person/index'),
+        meta: { title: '人员管理', icon: 'form' }
       }
     ]
   },

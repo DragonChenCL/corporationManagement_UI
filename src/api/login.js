@@ -10,13 +10,21 @@ export function login(username, password) {
     }
   })
 }
-
+//获取用户信息
 export function getInfo(username) {
   return request({
     url: '/user/detail',
     method: 'get',
     params: { username }
   })
+}
+//更新用户信息
+export function updateInfo(PeronForm) {
+  return request({
+    url: '/user/detail',
+    method: 'post',
+    data: PeronForm
+  }) 
 }
 
 export function logout() {

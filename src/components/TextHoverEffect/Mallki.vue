@@ -1,9 +1,9 @@
 <template>
-  <a :class="className" class="link--mallki" href="#">
+  <span :class="className" class="link--mallki" href="#">
     {{ text }}
     <span :data-letters="text"/>
     <span :data-letters="text"/>
-  </a>
+  </span>
 </template>
 
 <script>
@@ -23,7 +23,9 @@ export default {
 
 <style>
 /* Mallki */
-
+a{
+  text-decoration: none;
+}
 .link--mallki {
   font-weight: 800;
   color: #4dd9d5;

@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/login'
+import { login, logout, getInfo, updateInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { getName, setName, removeName } from '@/utils/auth'
 
@@ -36,8 +36,6 @@ const user = {
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
           const token = response.result
-          // console.log(response)
-          // console.log(token)
           setToken(token)
           setName(userInfo.username)
           commit('SET_NAME',userInfo.username)
@@ -69,7 +67,16 @@ const user = {
         })
       })
     },
-
+    //更新用户信息
+    UpdateInfo({ commit, state },PeronForm) {
+      return new Promise((resolve, reject) => {
+        updateInfo(PeronForm).then(response => {
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
