@@ -3,13 +3,33 @@
     <el-card class="box-card" shadow="hover">
       <div class="clearfix">
         <pan-thumb :image="association.logo" style="float: left">
-          <span
+          <!-- <span
             v-for="item in ['祝','您','使','用','愉','快','!','!']"
             :key="item"
             class="pan-info-roles"
             style="color:red"
-          >{{ item }}</span>
+          >{{ item }}</span> -->
+          <el-button
+            type="primary"
+            icon="upload"
+            style="margin-top:35px;margin-left:-2px"
+            size="mini"
+            @click="imagecropperShow=true"
+          >点我，更换头像</el-button>
         </pan-thumb>
+         <!-- 上传头像的组件 -->
+        <image-cropper
+          v-show="imagecropperShow"
+          field="file"
+          :width="300"
+          :height="300"
+          :key="imagecropperKey"
+          url="http://localhost:8080/assoc/updateLogo"
+          :params="logoname"
+          lang-type="zh"
+          @close="close"
+          @crop-upload-success="cropSuccess"
+        />
         <div class="info-container">
           <span class="display_name1" style="margin-top:25px">
             <span>您的社团 ：</span>
@@ -141,10 +161,11 @@ import Mallki from "@/components/TextHoverEffect/Mallki";
 import { parseTime } from "@/utils/index";
 import { getAssociationInfo } from "@/api/association";
 import { getCatrgory } from "@/api/category";
+import ImageCropper from '@/components/ImageCropper'
 
 export default {
   name: "DashboardEditor",
-  components: { PanThumb, Mallki },
+  components: { PanThumb, Mallki,ImageCropper },
   data() {
     var checkPhone = (rule, value, callback) => {
       const phoneReg = /^1[3|4|5|7|8][0-9]{9}$/;
@@ -164,11 +185,17 @@ export default {
       }, 100);
     };
     return {
+      imagecropperShow: false,
+      imagecropperKey: 0,
+
       categorys: ["categoryId", "categoryName"],
       haha: false,
       dialogTableVisible: false,
       dialogFormVisible: false,
       formLabelWidth: "80px",
+      logoname:{
+        assocId:"1"
+      },
       association: {
         momentImgs: "",
         address: "",
@@ -216,6 +243,20 @@ export default {
     ...mapGetters(["assocId"])
   },
   methods: {
+     // 头像上传的方法
+    cropSuccess(resData) {
+      console.log("xzzxcasasdasdasdasdcxzxc")
+      this.imagecropperShow = false
+      this.imagecropperKey = this.imagecropperKey + 1
+      Message({
+            message: "logo更新成功！",
+            type: "success",
+            duration: 3 * 1000
+          });
+    },
+    close() {
+      this.imagecropperShow = false
+    },
     commit(formname) {
       this.$refs[formname].validate(valid => {
         if (valid) {

@@ -57,7 +57,7 @@ export const constantRouterMap = [
         path: 'info',
         name: 'Info',
         component: () => import('@/views/corporation/index'),
-        meta: { title: '社团信息', icon: 'table' }
+        meta: { title: '社团信息', icon: 'association-info' }
       }
     ]
   },

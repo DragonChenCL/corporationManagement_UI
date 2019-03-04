@@ -21,10 +21,12 @@
         <!-- 上传头像的组件 -->
         <image-cropper
           v-show="imagecropperShow"
+          field="file"
           :width="300"
           :height="300"
           :key="imagecropperKey"
-          url="https://httpbin.org/post"
+          url="http://localhost:8080/assoc/updateLogo"
+          :params="associd"
           lang-type="zh"
           @close="close"
           @crop-upload-success="cropSuccess"
@@ -314,6 +316,9 @@ export default {
     },
     close() {
       this.imagecropperShow = false
+    },
+    changeLogo(){
+      
     },
     // 用户信息更新的方法
     commit(formname) {

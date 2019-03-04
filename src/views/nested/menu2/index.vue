@@ -55,7 +55,7 @@
             <template slot-scope="scope">
               <span v-if="scope.row.status=='在职'" style="color:#1ab394">{{ scope.row.status }}</span>
               <span v-else-if="scope.row.status=='离职'" style="color:#e71c23">{{ scope.row.status }}</span>
-              <span v-else-if="scope.row.status=='离职中'" style="color:#447ed9">{{ scope.row.status }}</span>
+              <span v-else style="color:#447ed9">{{ scope.row.status }}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作">
@@ -84,7 +84,7 @@
       ></el-pagination>
     </div>
 
-    <el-dialog title="人员基础信息" :visible.sync="dialogFormVisible" top="0vh">
+    <el-dialog title="人员基础信息" :visible.sync="dialogFormVisible" top="0vh" :close-on-click-modal='closeOn'>
       <el-form :model="Data">
         <el-form-item label="工号：" :label-width="formLabelWidth">
           <el-input v-model="Data.id" autocomplete="off"></el-input>
@@ -131,8 +131,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button @click="cancel('Data')">取 消</el-button>
+        <el-button type="primary" @click="submit('Data')">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -145,6 +145,7 @@ import { Message } from "element-ui";
 export default {
   data() {
     return {
+      closeOn:false,
       dialogTableVisible: false,
       dialogFormVisible: false,
       formLabelWidth: "100px",
@@ -215,6 +216,14 @@ export default {
   },
   computed: {},
   methods: {
+    cancel(formname){
+      this.Data = '';
+      this.dialogFormVisible = false;
+    },
+     submit(formname){
+      this.Data = '';
+      this.dialogFormVisible = false;
+    },
     getNoticeInfo(row, index) {
       // console.log(row,index)
       this.Data = row;
