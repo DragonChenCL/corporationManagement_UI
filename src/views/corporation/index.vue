@@ -25,7 +25,7 @@
           :height="300"
           :key="imagecropperKey"
           url="http://localhost:8080/assoc/updateLogo"
-          :params="logoname"
+          :params="association"
           lang-type="zh"
           @close="close"
           @crop-upload-success="cropSuccess"
@@ -194,9 +194,10 @@ export default {
       dialogFormVisible: false,
       formLabelWidth: "80px",
       logoname:{
-        assocId:"1"
+        assocId: this.assocId
       },
       association: {
+        assocId:"",
         momentImgs: "",
         address: "",
         assName: "",
@@ -245,9 +246,9 @@ export default {
   methods: {
      // 头像上传的方法
     cropSuccess(resData) {
-      console.log("xzzxcasasdasdasdasdcxzxc")
       this.imagecropperShow = false
       this.imagecropperKey = this.imagecropperKey + 1
+      this.association.logo = process.env.BASE_API+ resData.result;
       Message({
             message: "logo更新成功！",
             type: "success",
@@ -293,6 +294,7 @@ export default {
         .then(response => {
           this.association = response.result;
           this.association.logo = process.env.BASE_API + this.association.logo;
+          this.association.assocId = response.result.associationId;
           this.association.createdDate = parseTime(
             response.result.createdDate,
             "{y}-{m}-{d}"

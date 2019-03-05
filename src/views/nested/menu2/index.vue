@@ -5,35 +5,35 @@
     <div class="serach-conditions">
       <el-form :inline="true" :model="searchConditions">
         <el-form-item label="工号：">
-          <el-input placeholder="请输入工号" size="mini" class="input"></el-input>
+          <el-input placeholder="请输入工号"  class="input"></el-input>
         </el-form-item>
         <el-form-item label="姓名：">
-          <el-input placeholder="请输入姓名" size="mini" class="input"></el-input>
+          <el-input placeholder="请输入姓名"  class="input"></el-input>
         </el-form-item>
         <el-form-item label="手机：">
-          <el-input placeholder="请输入手机" size="mini" class="input"></el-input>
+          <el-input placeholder="请输入手机"  class="input"></el-input>
         </el-form-item>
         <el-form-item label="Email：">
-          <el-input placeholder="请输入Email" size="mini" class="input"></el-input>
+          <el-input placeholder="请输入Email"  class="input"></el-input>
         </el-form-item>
         <el-form-item label="办公电话：">
-          <el-input placeholder="请输入办公电话" size="mini" class="input"></el-input>
+          <el-input placeholder="请输入办公电话"  class="input"></el-input>
         </el-form-item>
         <el-form-item label="部门：">
-          <el-select placeholder="销售部" size="mini" class="input">
+          <el-select placeholder="销售部"  class="input">
             
           </el-select>
-          <el-select placeholder="销售一部" size="mini" class="input">
+          <el-select placeholder="销售一部"  class="input">
 
           </el-select>
         </el-form-item>
         <el-form-item label="员工类型：">
-          <el-select placeholder="外部类型" size="mini" class="input"></el-select>
+          <el-select placeholder="外部类型"  class="input"></el-select>
         </el-form-item>
         <el-form-item label="状态：">
-          <el-select placeholder="在职" size="mini" class="input"></el-select>
+          <el-select placeholder="在职"  class="input"></el-select>
         </el-form-item>
-        <el-button type="primary" size="mini" style="margin-top:5px" @click="change">查询</el-button>
+        <el-button type="primary"  style="margin-top:5px">查询</el-button>
       </el-form>
     </div>
     <div class="info-list">
@@ -44,7 +44,12 @@
         <el-table :data="tableData" style="width: 100%" border>
           <el-table-column prop="id" label="工号"></el-table-column>
           <el-table-column prop="name" label="姓名"></el-table-column>
-          <el-table-column prop="sex" label="性别"></el-table-column>
+          <el-table-column prop="sex" label="性别">
+             <template slot-scope="scope">
+              <span v-if="scope.row.sex=='male'">男</span>
+              <span v-else>女</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="leader" label="直属上级"></el-table-column>
           <el-table-column prop="department" label="部门"></el-table-column>
           <el-table-column prop="phone" label="手机"></el-table-column>
@@ -169,7 +174,7 @@ export default {
         {
           id: 1,
           name: "张三",
-          sex: "男",
+          sex: "male",
           leader: "陈龙",
           department: "销售》开发一部",
           department1: "销售",
@@ -183,7 +188,7 @@ export default {
         {
           id: 2,
           name: "李四",
-          sex: "男",
+          sex: "male",
           leader: "陈龙",
           department: "销售》开发一部",
           department1: "销售",
@@ -197,7 +202,7 @@ export default {
         {
           id: 3,
           name: "王二麻",
-          sex: "男",
+          sex: "female",
           leader: "陈龙",
           department: "销售》开发一部",
           department1: "销售",
@@ -214,18 +219,25 @@ export default {
   components: {
     TitleBox
   },
+  watch:{
+    //监听dialog的可视属性
+    dialogFormVisible(newVal,oldVal){
+      if(newVal == false){
+        this.Data = "";
+      }
+    }
+  },
   computed: {},
   methods: {
     cancel(formname){
-      this.Data = '';
       this.dialogFormVisible = false;
     },
      submit(formname){
-      this.Data = '';
       this.dialogFormVisible = false;
     },
     getNoticeInfo(row, index) {
-      // console.log(row,index)
+      console.log(row);
+      console.log(index);
       this.Data = row;
       this.dialogFormVisible = true;
     },
