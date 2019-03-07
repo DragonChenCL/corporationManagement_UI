@@ -33,12 +33,12 @@
         <el-form-item label="状态：">
           <el-select placeholder="在职"  class="input"></el-select>
         </el-form-item>
-        <el-button type="primary"  style="margin-top:5px">查询</el-button>
+        <el-button type="primary" style="margin-left:15px">查询</el-button>
       </el-form>
     </div>
     <div class="info-list">
       <div class="add-button">
-        <el-button type="primary" size="mini" @click="dialogFormVisible = true">添 加 员 工</el-button>
+        <el-button type="primary" @click="dialogFormVisible = true">添 加 员 工</el-button>
       </div>
       <div class="list">
         <el-table :data="tableData" style="width: 100%" border>
@@ -170,6 +170,19 @@ export default {
         type: "",
         status: ""
       },
+       ResetData: {
+        id: "",
+        name: "",
+        sex: "",
+        leader: "",
+        department1: "",
+        department2: "",
+        phone: "",
+        Email: "",
+        otherphone: "",
+        type: "",
+        status: ""
+      },
       tableData: [
         {
           id: 1,
@@ -223,7 +236,7 @@ export default {
     //监听dialog的可视属性
     dialogFormVisible(newVal,oldVal){
       if(newVal == false){
-        this.Data = "";
+        this.Data = this.ResetData;
       }
     }
   },
@@ -236,9 +249,10 @@ export default {
       this.dialogFormVisible = false;
     },
     getNoticeInfo(row, index) {
-      console.log(row);
-      console.log(index);
-      this.Data = row;
+      //用json转换
+      const data = JSON.stringify(row);
+      this.Data = JSON.parse(data);
+
       this.dialogFormVisible = true;
     },
     del() {
@@ -279,10 +293,9 @@ export default {
   padding-left: 30px;
 }
 .serach-conditions {
-  margin-top: 20px;
+  margin-top: 15px;
   margin-left: 30px;
-  display: flex;
-  flex-wrap: wrap;
+
 }
 .input {
   width: 140px;
