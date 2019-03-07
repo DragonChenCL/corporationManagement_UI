@@ -9,7 +9,7 @@ export function getAssociationInfo(id) {
   }
   
   export function updateLogo(file,assocId) {
-    return request({
+    return request({ 
       url: '/assoc/updateLogo',
       method: 'post',
       params: { file,assocId }
