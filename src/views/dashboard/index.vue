@@ -25,8 +25,8 @@
           :width="300"
           :height="300"
           :key="imagecropperKey"
-          url="http://localhost:8080/assoc/updateLogo"
-          :params="associd"
+          url="http://localhost:8080/user/updateHeadPortrait"
+          :params="PeronForm"
           lang-type="zh"
           @close="close"
           @crop-upload-success="cropSuccess"
@@ -198,14 +198,14 @@
 <script>
 import { mapGetters } from "vuex";
 import PanThumb from "@/components/PanThumb";
-import ImageCropper from '@/components/ImageCropper'
+import ImageCropper from "@/components/ImageCropper";
 import { Message } from "element-ui";
 import Mallki from "@/components/TextHoverEffect/Mallki";
 import { parseTime } from "@/utils/index";
 
 export default {
   name: "DashboardEditor",
-  components: { PanThumb, Mallki ,ImageCropper},
+  components: { PanThumb, Mallki, ImageCropper },
   data() {
     var checkQQ = (rule, value, callback) => {
       if (!value) {
@@ -270,7 +270,8 @@ export default {
         myClass: "",
         sex: "",
         introduction: "",
-        position: ""
+        position: "",
+        headPortrait: ""
       },
       Rules: {
         realName: [
@@ -309,17 +310,21 @@ export default {
   },
   methods: {
     // 头像上传的方法
+
     cropSuccess(resData) {
-      this.imagecropperShow = false
-      this.imagecropperKey = this.imagecropperKey + 1
-      this.image = resData.files.avatar
+      this.imagecropperShow = false;
+      this.imagecropperKey = this.imagecropperKey + 1;
+      this.$store.commit('SET_AVATAR',process.env.BASE_API + resData.result);
+      Message({
+        message: "头像更新成功！",
+        type: "success",
+        duration: 3 * 1000
+      });
     },
     close() {
-      this.imagecropperShow = false
+      this.imagecropperShow = false;
     },
-    changeLogo(){
-      
-    },
+    changeLogo() {},
     // 用户信息更新的方法
     commit(formname) {
       this.$refs[formname].validate(valid => {
