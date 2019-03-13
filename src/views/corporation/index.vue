@@ -24,7 +24,7 @@
           :width="300"
           :height="300"
           :key="imagecropperKey"
-          url="http://localhost:8080/assoc/updateLogo"
+          :url="imgUrl"
           :params="association"
           lang-type="zh"
           @close="close"
@@ -187,7 +187,7 @@ export default {
     return {
       imagecropperShow: false,
       imagecropperKey: 0,
-
+      imgUrl:process.env.BASE_API+"/assoc/updateLogo", 
       categorys: ["categoryId", "categoryName"],
       haha: false,
       dialogTableVisible: false,

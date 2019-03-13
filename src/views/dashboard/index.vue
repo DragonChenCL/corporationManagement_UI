@@ -25,7 +25,7 @@
           :width="300"
           :height="300"
           :key="imagecropperKey"
-          url="http://localhost:8080/user/updateHeadPortrait"
+          :url="imgUrl"
           :params="PeronForm"
           lang-type="zh"
           @close="close"
@@ -252,7 +252,7 @@ export default {
     return {
       imagecropperShow: false,
       imagecropperKey: 0,
-
+      imgUrl:process.env.BASE_API+"/user/updateHeadPortrait",
       haha: false,
       dialogTableVisible: false,
       dialogFormVisible: false,
