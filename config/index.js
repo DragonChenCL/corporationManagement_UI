@@ -18,7 +18,7 @@ module.exports = {
   dev: {
     // Paths
     assetsSubDirectory: 'static',
-    assetsPublicPath: './',
+    assetsPublicPath: '/',
     proxyTable: {},
 
     // Various Dev Server settings
@@ -54,7 +54,7 @@ module.exports = {
   prod: {
     // Paths
     assetsSubDirectory: 'static',
-    assetsPublicPath: './',
+    assetsPublicPath: '/',
     proxyTable: {},
 
     // Various Dev Server settings
