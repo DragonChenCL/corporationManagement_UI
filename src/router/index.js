@@ -45,7 +45,8 @@ export const constantRouterMap = [
     hidden: true,
     children: [{
       path: 'dashboard',
-      component: () => import('@/views/dashboard/index')
+      component: () => import('@/views/dashboard/index'),
+      meta: { title:'个人信息', icon: 'association-info' }
 }]
   },
 
@@ -65,81 +66,115 @@ export const constantRouterMap = [
   {
     path: '/peron',
     component: Layout,
-    children: [
-      {
-        path: 'manage',
-        name: 'person',
-        component: () => import('@/views/person/index'),
-        meta: { title: '人员管理', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
+    redirect: '/person/member',
+    name:'personManage',
     meta: {
-      title: 'Nested',
-      icon: 'nested'
+      title: '人员管理',
+      icon: '成员管理'
     },
     children: [
       {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        meta: { title: 'menu2' }
+        path: 'member',
+        name: 'member',
+        component: () => import('@/views/person/member/memberList'),
+        meta: { title: '成员管理', icon: 'person' }
+      },{
+        path: 'apply',
+        name: 'apply',
+        component: () => import('@/views/person/apply/applyList'),
+        meta: { title: '成员申请', icon: '申请' }
       }
     ]
   },
-
   {
-    path: 'external-link',
+    path: '/event',
     component: Layout,
+    redirect: '/event/eventList',
+    name:'eventManage',
+    meta: {
+      title: '活动管理',
+      icon: '社团活动'
+    },
     children: [
       {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
+        path: 'eventList',
+        name: 'eventList',
+        component: () => import('@/views/event/eventList/eventList'),
+        meta: { title: '活动列表', icon: '活动-列表' }
+      },{
+        path: 'apply',
+        name: 'apply',
+        component: () => import('@/views/event/eventApplay/eventApplay'),
+        meta: { title: '活动申请', icon: '活动申请' }
+      }
+    ]
+  },
+  {
+    path: '/finance',
+    component: Layout,
+    redirect: '/finance/financeIn',
+    name:'financeManage',
+    meta: {
+      title: '财政管理',
+      icon: '社团账户'
+    },
+    children: [
+      {
+        path: 'finaceIn',
+        name: 'finaceIn',
+        component: () => import('@/views/finance/financeIn'),
+        meta: { title: '入账管理', icon: '收入账单' }
+      },{
+        path: 'apply',
+        name: 'apply',
+        component: () => import('@/views/finance/financeOut'),
+        meta: { title: '出帐管理', icon: '支出账单' }
+      }
+    ]
+  },
+  {
+    path: '/news',
+    component: Layout,
+    redirect: '/news/',
+    name:'newsManage',
+    meta: {
+      title: '新闻管理',
+      icon: '新闻'
+    },
+    children: [
+      {
+        path: 'newsList',
+        name: 'newsList',
+        component: () => import('@/views/news/newsList'),
+        meta: { title: '新闻列表', icon: '新闻列表' }
+      },{
+        path: 'newNews',
+        name: 'newNews',
+        component: () => import('@/views/news/newNews'),
+        meta: { title: '新增新闻', icon: '新增' }
+      }
+    ]
+  },
+  {
+    path: '/honor',
+    component: Layout,
+    redirect: '/honor/honorList',
+    name:'honorManage',
+    meta: {
+      title: '荣誉管理',
+      icon: '荣誉'
+    },
+    children: [
+      {
+        path: 'honorList',
+        name: 'honorList',
+        component: () => import('@/views/honor/honorList'),
+        meta: { title: '荣誉列表', icon: '荣誉列表' }
+      },{
+        path: 'apply',
+        name: 'apply',
+        component: () => import('@/views/honor/newHonor'),
+        meta: { title: '新增荣誉', icon: '新增' }
       }
     ]
   },
