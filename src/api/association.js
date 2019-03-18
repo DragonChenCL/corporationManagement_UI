@@ -15,3 +15,11 @@ export function getAssociationInfo(id) {
       params: { file,assocId }
     })
   }
+
+  export function updateAssociation(AssociationForm) {
+    return request({ 
+      url: '/assoc/detail',
+      method: 'post',
+      data: AssociationForm
+    })
+  }
