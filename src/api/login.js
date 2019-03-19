@@ -18,6 +18,7 @@ export function getInfo(username) {
     params: { username }
   })
 }
+
 //更新用户信息
 export function updateInfo(PeronForm) {
   return request({

@@ -69,7 +69,7 @@ export const constantRouterMap = [
     redirect: '/person/member',
     name:'personManage',
     meta: {
-      title: '人员管理',
+      title: '成员管理',
       icon: '成员管理'
     },
     children: [
@@ -77,7 +77,7 @@ export const constantRouterMap = [
         path: 'member',
         name: 'member',
         component: () => import('@/views/person/member/memberList'),
-        meta: { title: '成员管理', icon: 'person' }
+        meta: { title: '成员列表', icon: 'person' }
       },{
         path: 'apply',
         name: 'apply',
