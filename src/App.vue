@@ -14,5 +14,9 @@ export default {
 background-color: #fff;
 color: #606266;
 }
+.el-textarea.is-disabled .el-textarea__inner{
+  background-color: #fff;
+  color: #606266;
+}
 </style>
 

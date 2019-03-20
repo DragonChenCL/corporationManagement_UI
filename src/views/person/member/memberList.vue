@@ -1,6 +1,6 @@
 <template>
   <div class="attachment-container">
-    <title-box titleValue="人员管理-成员列表"></title-box>
+    <title-box titleValue="成员管理-成员列表"></title-box>
     <div class="base-attachment-container">
       <div class="form-container">
         <el-form :inline="true" :model="searchConditions">
@@ -29,7 +29,7 @@
             ></el-date-picker>
           </el-form-item>-->
           <el-form-item>
-            <el-button class="searchButton" type="primary">查询</el-button>
+            <el-button class="searchButton" type="primary" @click="query()">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -220,7 +220,7 @@
             </el-table-column>
             <el-table-column align="center" prop="enable" label="状态">
                <template slot-scope="scope">
-              <div v-if="scope.row.enable == '0'" style="color:red">禁用</div>
+              <div v-if="scope.row.enable == '0'" style="color:#F56C6C">禁用</div>
               <div v-if="scope.row.enable == '1'" style="color:#61BAA4">启用</div>
             </template>
             </el-table-column>
@@ -230,14 +230,14 @@
                   type="text"
                   size="mini"
                   @click="getNoticeInfo(scope.row,scope.$index)"
-                  style="color:green"
+                  style="color:#67C23A"
                 >查看</el-button>
                 <el-button
                   type="text"
                   size="mini"
-                  @click="getNotice(scope.row,scope.$index)"
+                  @click="update(scope.row,scope.$index)"
                 >编辑</el-button>
-                <el-button type="text" size="mini" style="color:red" @click="del()">删除</el-button>
+                <el-button type="text" size="mini" style="color:#F56C6C" @click="del()">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -245,12 +245,12 @@
       </div>
       <div class="page-container">
         <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="searchConditions.currentPage"
+          @size-change="handleSizeChange()"
+          @current-change="handleCurrentChange()"
+          :current-page.sync="searchConditions.currentPage"
           :page-sizes="[5, 10]"
-          :page-size="searchConditions.pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
+          :page-size.sync="searchConditions.pageSize"
+          layout="total, sizes, prev, pager, next"
           :total="total"
         ></el-pagination>
       </div>
@@ -261,12 +261,14 @@
 <script>
 import titleBox from "@/components/titleBox/titleBox";
 import { getMemberList } from "@/api/member";
+import { updateInfo } from "@/api/login";
 import { parseTime } from "@/utils/index";
 import { Message } from "element-ui";
 
 export default {
   data() {
     return {
+      //总页数
       total: 40,
       title: "",
       disabled: false,
@@ -340,23 +342,29 @@ export default {
     }
   },
   created() {
+    //页面加载时查询数据
     this.getMemberList();
   },
   methods: {
+    //手动点击查询
+    query(){
+      this.getMemberList();
+       Message({
+            message: "查询成功！",
+            type: "success",
+            duration: 3 * 1000
+          });
+    },
+
     getMemberList() {
       getMemberList(this.searchConditions)
         .then(response => {
           this.showData = response.result.content;
           this.total = response.result.totalElements;
-          Message({
-            message: "成员列表获取成功！",
-            type: "success",
-            duration: 3 * 1000
-          });
         })
         .catch(error => {
           Message({
-            message: "成员列表获取失败！",
+            message: "查询失败！",
             type: "error",
             duration: 3 * 1000
           });
@@ -368,7 +376,24 @@ export default {
     cancel(formname) {
       this.dialogFormVisible = false;
     },
+    //确认修改成员信息
     submit(formname) {
+      updateInfo(this.Data)
+        .then(response =>{
+          this.getMemberList();
+          Message({
+            message: "修改成功！",
+            type: "success",
+            duration: 3 * 1000
+          });
+        })
+        .catch(error=>{
+           Message({
+            message: "修改失败！",
+            type: "error",
+            duration: 3 * 1000
+          });
+        })
       this.dialogFormVisible = false;
     },
     getNoticeInfo(row, index) {
@@ -378,10 +403,9 @@ export default {
       this.disabled = true;
       this.title = "查看成员信息";
     },
-    getNoticeInfoEdit(row, index) {
+    update(row, index) {
       this.Data = JSON.parse(JSON.stringify(row));
       this.dialogFormVisible = true;
-      this.workStatusDisabled = true;
       this.title = "编辑成员信息";
     },
     del() {
@@ -404,9 +428,11 @@ export default {
         });
     },
     handleSizeChange(val) {
+      this.getMemberList();
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
+      this.getMemberList();
       console.log(`当前页: ${val}`);
     }
   },
