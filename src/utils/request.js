@@ -30,7 +30,7 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     if (res.code !== 1001) {
-      if(res.code === 1002){
+      if(res.code === 1002 || res.code === 4003){
         Message({
           message: res.message,
           type: 'error',

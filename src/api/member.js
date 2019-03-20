@@ -8,3 +8,12 @@ export function getMemberList(MemberListCondition) {
       data: MemberListCondition
     }) 
   }
+
+//获取成员列表
+export function deleteUser(userId) {
+  return request({
+    url: '/user/detail',
+    method: 'delete',
+    params: { userId }
+  }) 
+}

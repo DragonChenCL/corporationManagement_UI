@@ -14,7 +14,12 @@
             <el-input v-model="searchConditions.myClass" placeholder="请填写班级" class="input"></el-input>
           </el-form-item>
           <el-form-item label="状态：">
-            <el-select v-model="searchConditions.enable" placeholder="请选择状态" class="input" clearable>
+            <el-select
+              v-model="searchConditions.enable"
+              placeholder="请选择状态"
+              class="input"
+              clearable
+            >
               <el-option value="0" label="禁用"></el-option>
               <el-option value="1" label="启用"></el-option>
             </el-select>
@@ -61,7 +66,14 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="状态：" :label-width="formLabelWidth">
-                  <el-switch v-model="Data.enable" active-color="#13ce66" inactive-color="#ff4949" :active-value=1 :inactive-value=0 :disabled="disabled"></el-switch>
+                  <el-switch
+                    v-model="Data.enable"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949"
+                    :active-value="1"
+                    :inactive-value="0"
+                    :disabled="disabled"
+                  ></el-switch>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -149,7 +161,10 @@
                     autocomplete="off"
                     class="diaInput"
                     :disabled="disabled"
-                  ></el-select>
+                  >
+                    <el-option label="男" value="男"></el-option>
+                    <el-option label="女" value="女"></el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -215,14 +230,15 @@
             <el-table-column align="center" prop="myClass" label="班级"></el-table-column>
             <el-table-column align="center" prop="registeryDate" label="注册日期">
               <template slot-scope="scope">
-              <div >{{scope.row.registeryDate | formatDate}}</div>
-            </template>
+                <!-- 使用时间过滤器 -->
+                <div>{{scope.row.registeryDate | formatDate}}</div>
+              </template>
             </el-table-column>
             <el-table-column align="center" prop="enable" label="状态">
-               <template slot-scope="scope">
-              <div v-if="scope.row.enable == '0'" style="color:#F56C6C">禁用</div>
-              <div v-if="scope.row.enable == '1'" style="color:#61BAA4">启用</div>
-            </template>
+              <template slot-scope="scope">
+                <div v-if="scope.row.enable == '0'" style="color:#F56C6C">禁用</div>
+                <div v-if="scope.row.enable == '1'" style="color:#61BAA4">启用</div>
+              </template>
             </el-table-column>
             <el-table-column align="center" label="操作" min-width="90px" fixed="right">
               <template slot-scope="scope">
@@ -232,12 +248,8 @@
                   @click="getNoticeInfo(scope.row,scope.$index)"
                   style="color:#67C23A"
                 >查看</el-button>
-                <el-button
-                  type="text"
-                  size="mini"
-                  @click="update(scope.row,scope.$index)"
-                >编辑</el-button>
-                <el-button type="text" size="mini" style="color:#F56C6C" @click="del()">删除</el-button>
+                <el-button type="text" size="mini" @click="update(scope.row,scope.$index)">编辑</el-button>
+                <el-button type="text" size="mini" style="color:#F56C6C" @click="del(scope.row)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -260,7 +272,7 @@
 
 <script>
 import titleBox from "@/components/titleBox/titleBox";
-import { getMemberList } from "@/api/member";
+import { getMemberList, deleteUser } from "@/api/member";
 import { updateInfo } from "@/api/login";
 import { parseTime } from "@/utils/index";
 import { Message } from "element-ui";
@@ -286,44 +298,44 @@ export default {
         pageSize: 5
       },
       Data: {
-        userId:"",
-        authId:"",
-        associationId:"",
-        username:"",
-        phoneNumber:"",
-        email:"",
-        birthday:"",
-        headPortrait:"",
-        enable:"",
-        registeryDate:"",
-        address:"",
-        realName:"",
-        qq:"",
-        college:"",
-        myClass:"",
-        sex:"",
-        introduction:"",
-        position:""
+        userId: "",
+        authId: "",
+        associationId: "",
+        username: "",
+        phoneNumber: "",
+        email: "",
+        birthday: "",
+        headPortrait: "",
+        enable: "",
+        registeryDate: "",
+        address: "",
+        realName: "",
+        qq: "",
+        college: "",
+        myClass: "",
+        sex: "",
+        introduction: "",
+        position: ""
       },
       ResetData: {
-        userId:"",
-        authId:"",
-        associationId:"",
-        username:"",
-        phoneNumber:"",
-        email:"",
-        birthday:"",
-        headPortrait:"",
-        enable:"",
-        registeryDate:"",
-        address:"",
-        realName:"",
-        qq:"",
-        college:"",
-        myClass:"",
-        sex:"",
-        introduction:"",
-        position:""
+        userId: "",
+        authId: "",
+        associationId: "",
+        username: "",
+        phoneNumber: "",
+        email: "",
+        birthday: "",
+        headPortrait: "",
+        enable: "",
+        registeryDate: "",
+        address: "",
+        realName: "",
+        qq: "",
+        college: "",
+        myClass: "",
+        sex: "",
+        introduction: "",
+        position: ""
       }
     };
   },
@@ -336,6 +348,7 @@ export default {
       }
     }
   },
+  //时间过滤器
   filters: {
     formatDate(time) {
       return parseTime(time, "{y}-{m}-{d}");
@@ -347,15 +360,15 @@ export default {
   },
   methods: {
     //手动点击查询
-    query(){
+    query() {
       this.getMemberList();
-       Message({
-            message: "查询成功！",
-            type: "success",
-            duration: 3 * 1000
-          });
+      Message({
+        message: "查询成功！",
+        type: "success",
+        duration: 3 * 1000
+      });
     },
-
+    // 获取成员列表
     getMemberList() {
       getMemberList(this.searchConditions)
         .then(response => {
@@ -379,7 +392,8 @@ export default {
     //确认修改成员信息
     submit(formname) {
       updateInfo(this.Data)
-        .then(response =>{
+        .then(response => {
+          // 修改完成后重新拉取信息
           this.getMemberList();
           Message({
             message: "修改成功！",
@@ -387,13 +401,13 @@ export default {
             duration: 3 * 1000
           });
         })
-        .catch(error=>{
-           Message({
+        .catch(error => {
+          Message({
             message: "修改失败！",
             type: "error",
             duration: 3 * 1000
           });
-        })
+        });
       this.dialogFormVisible = false;
     },
     getNoticeInfo(row, index) {
@@ -408,17 +422,28 @@ export default {
       this.dialogFormVisible = true;
       this.title = "编辑成员信息";
     },
-    del() {
+    del(row) {
       this.$confirm("此操作将永久删除改数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
+          deleteUser(row.userId)
+            .then(response => {
+              // 删除完成后重新拉取信息
+              this.getMemberList();
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            })
+            .catch(error => {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            });
         })
         .catch(() => {
           this.$message({
