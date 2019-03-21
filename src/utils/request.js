@@ -30,7 +30,7 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     if (res.code !== 1001) {
-      if(res.code === 1002 || res.code === 4003){
+      if(res.code === 1002 || res.code === 4003 || res.code === 2006){
         Message({
           message: res.message,
           type: 'error',
@@ -53,18 +53,18 @@ service.interceptors.response.use(
           })
         })
       }
-      return Promise.reject('error')
+      return Promise.reject(error)
     } else {
       return response.data
     }
   },
   error => {
     console.log('err' + error) // for debug
-    // Message({
-    //   message: error.message,
-    //   type: 'error',
-    //   duration: 5 * 1000
-    // })
+    Message({
+      message: error.message,
+      type: 'error',
+      duration: 3 * 1000
+    })
     return Promise.reject(error)
   }
 )

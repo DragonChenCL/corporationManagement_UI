@@ -43,13 +43,15 @@
           <div class="one-line">
             <el-row>
               <el-col :span="12">
-                <div class="grid-content bg-purple">用户名 ：
+                <div class="grid-content bg-purple">
+                  用户名 ：
                   <mallki class-name="mallki-text" :text="PeronForm.realName"/>
                 </div>
               </el-col>
               <el-col :span="12">
                 <div class="grid-content bg-purple-light">
-                  <div class="grid-content bg-purple">电话号码 ：
+                  <div class="grid-content bg-purple">
+                    电话号码 ：
                     <mallki class-name="mallki-text" :text="PeronForm.phoneNumber"/>
                   </div>
                 </div>
@@ -59,13 +61,15 @@
           <div class="one-line">
             <el-row>
               <el-col :span="12">
-                <div class="grid-content bg-purple">所属社团 ：
+                <div class="grid-content bg-purple">
+                  所属社团 ：
                   <mallki class-name="mallki-text" :text="PeronForm.association"/>
                 </div>
               </el-col>
               <el-col :span="12">
                 <div class="grid-content bg-purple-light">
-                  <div class="grid-content bg-purple">email ：
+                  <div class="grid-content bg-purple">
+                    email ：
                     <mallki class-name="mallki-text" :text="PeronForm.email"/>
                   </div>
                 </div>
@@ -75,13 +79,15 @@
           <div class="one-line">
             <el-row>
               <el-col :span="12">
-                <div class="grid-content bg-purple">出生日期 ：
+                <div class="grid-content bg-purple">
+                  出生日期 ：
                   <mallki class-name="mallki-text" :text="PeronForm.birthday"/>
                 </div>
               </el-col>
               <el-col :span="12">
                 <div class="grid-content bg-purple-light">
-                  <div class="grid-content bg-purple">家庭住址 ：
+                  <div class="grid-content bg-purple">
+                    家庭住址 ：
                     <mallki class-name="mallki-text" :text="PeronForm.address"/>
                   </div>
                 </div>
@@ -91,13 +97,15 @@
           <div class="one-line">
             <el-row>
               <el-col :span="12">
-                <div class="grid-content bg-purple">qq号 ：
+                <div class="grid-content bg-purple">
+                  qq号 ：
                   <mallki class-name="mallki-text" :text="PeronForm.qq"/>
                 </div>
               </el-col>
               <el-col :span="12">
                 <div class="grid-content bg-purple-light">
-                  <div class="grid-content bg-purple">所属学院 ：
+                  <div class="grid-content bg-purple">
+                    所属学院 ：
                     <mallki class-name="mallki-text" :text="PeronForm.college"/>
                   </div>
                 </div>
@@ -107,13 +115,15 @@
           <div class="one-line">
             <el-row>
               <el-col :span="12">
-                <div class="grid-content bg-purple">我的班级 ：
+                <div class="grid-content bg-purple">
+                  我的班级 ：
                   <mallki class-name="mallki-text" :text="PeronForm.myClass"/>
                 </div>
               </el-col>
               <el-col :span="12">
                 <div class="grid-content bg-purple-light">
-                  <div class="grid-content bg-purple">性别 ：
+                  <div class="grid-content bg-purple">
+                    性别 ：
                     <mallki class-name="mallki-text" :text="PeronForm.sex"/>
                   </div>
                 </div>
@@ -123,13 +133,15 @@
           <div class="one-line">
             <el-row>
               <el-col :span="12">
-                <div class="grid-content bg-purple">个人简介 ：
+                <div class="grid-content bg-purple">
+                  个人简介 ：
                   <mallki class-name="mallki-text" :text="PeronForm.introduction"/>
                 </div>
               </el-col>
               <el-col :span="12">
                 <div class="grid-content bg-purple-light">
-                  <div class="grid-content bg-purple">职位 ：
+                  <div class="grid-content bg-purple">
+                    职位 ：
                     <mallki class-name="mallki-text" :text="PeronForm.position"/>
                   </div>
                 </div>
@@ -162,12 +174,21 @@
           <el-form-item label="email" :label-width="formLabelWidth" prop="email">
             <el-input v-model="PeronForm.email" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="出生日期" :label-width="formLabelWidth" prop="birthday">
+              <el-form-item label="学院" :label-width="formLabelWidth" prop="collegeId">
+                <el-select v-model="PeronForm.collegeId" placeholder="请选择学院" class="box">
+                </el-select>
+              </el-form-item>
+              <el-form-item label="班级" :label-width="formLabelWidth" prop="myclassId" >
+                <el-select v-model="PeronForm.myclassId" placeholder="请选择班级" class="box">
+                </el-select>
+              </el-form-item>
+          <el-form-item label="出生日期" :label-width="formLabelWidth" prop="birthday" >
             <el-date-picker
               v-model="PeronForm.birthday"
               type="date"
               format="yyyy 年 MM 月 dd 日"
               placeholder="选择日期"
+              class="box"
             ></el-date-picker>
           </el-form-item>
           <el-form-item label="家庭住址" :label-width="formLabelWidth" prop="address">
@@ -177,7 +198,7 @@
             <el-input v-model="PeronForm.qq" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="性别" :label-width="formLabelWidth" prop="sex">
-            <el-select v-model="PeronForm.sex" placeholder="请选择性别">
+            <el-select v-model="PeronForm.sex" placeholder="请选择性别" class="box">
               <el-option label="男" value="男"></el-option>
               <el-option label="女" value="女"></el-option>
             </el-select>
@@ -202,57 +223,16 @@ import ImageCropper from "@/components/ImageCropper";
 import { Message } from "element-ui";
 import Mallki from "@/components/TextHoverEffect/Mallki";
 import { parseTime } from "@/utils/index";
+import { checkQQ, checkEmail, checkPhone } from "@/utils/validate";
 
 export default {
   name: "DashboardEditor",
   components: { PanThumb, Mallki, ImageCropper },
   data() {
-    var checkQQ = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error("QQ不能为空"));
-      }
-      setTimeout(() => {
-        if (!Number.isInteger(+value)) {
-          callback(new Error("请输入数字值"));
-        } else {
-          callback();
-        }
-      }, 100);
-    };
-    var checkPhone = (rule, value, callback) => {
-      const phoneReg = /^1[3|4|5|7|8][0-9]{9}$/;
-      if (!value) {
-        return callback(new Error("电话号码不能为空"));
-      }
-      setTimeout(() => {
-        if (!Number.isInteger(+value)) {
-          callback(new Error("请输入数字值"));
-        } else {
-          if (phoneReg.test(value)) {
-            callback();
-          } else {
-            callback(new Error("电话号码格式不正确"));
-          }
-        }
-      }, 100);
-    };
-    var checkEmail = (rule, value, callback) => {
-      const mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
-      if (!value) {
-        return callback(new Error("邮箱不能为空"));
-      }
-      setTimeout(() => {
-        if (mailReg.test(value)) {
-          callback();
-        } else {
-          callback(new Error("请输入正确的邮箱格式"));
-        }
-      }, 100);
-    };
     return {
       imagecropperShow: false,
       imagecropperKey: 0,
-      imgUrl:process.env.BASE_API+"/user/updateHeadPortrait",
+      imgUrl: process.env.BASE_API + "/user/updateHeadPortrait",
       haha: false,
       dialogTableVisible: false,
       dialogFormVisible: false,
@@ -314,7 +294,7 @@ export default {
     cropSuccess(resData) {
       this.imagecropperShow = false;
       this.imagecropperKey = this.imagecropperKey + 1;
-      this.$store.commit('SET_AVATAR',process.env.BASE_API + resData.result);
+      this.$store.commit("SET_AVATAR", process.env.BASE_API + resData.result);
       Message({
         message: "头像更新成功！",
         type: "success",
@@ -382,6 +362,9 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+.box{
+  width: 100%
+}
 ._top {
   margin-top: 20px;
 }

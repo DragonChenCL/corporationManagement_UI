@@ -29,3 +29,68 @@ export function validatAlphabets(str) {
   const reg = /^[A-Za-z]+$/
   return reg.test(str)
 }
+
+/**表单校验 */
+// 校验qq
+export const checkQQ = (rule, value, callback) => {
+  if (!value) {
+    return callback(new Error("QQ不能为空"));
+  }
+  setTimeout(() => {
+    if (!Number.isInteger(+value)) {
+      callback(new Error("请输入数字值"));
+    } else {
+      callback();
+    }
+  }, 100);
+}
+
+export const checkPhone = (rule, value, callback) => {
+  const phoneReg = /^1[3|4|5|7|8][0-9]{9}$/;
+  if (!value) {
+    return callback(new Error("电话号码不能为空"));
+  }
+  setTimeout(() => {
+    if (!Number.isInteger(+value)) {
+      callback(new Error("请输入数字值"));
+    } else {
+      if (phoneReg.test(value)) {
+        callback();
+      } else {
+        callback(new Error("电话号码格式不正确"));
+      }
+    }
+  }, 100);
+}
+
+export const checkUsername = (rule, value, callback) => {
+  const phoneReg = /^1[0-9]{9}$/;
+  if (!value) {
+    return callback(new Error("学号不存在"));
+  }
+  setTimeout(() => {
+    if (!Number.isInteger(+value)) {
+      callback(new Error("请正确输入学号"));
+    } else {
+      if (phoneReg.test(value)) {
+        callback();
+      } else {
+        callback(new Error("学号格式不正确"));
+      }
+    }
+  }, 100);
+}
+
+export const checkEmail = (rule, value, callback) => {
+  const mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+  if (!value) {
+    return callback(new Error("邮箱不能为空"));
+  }
+  setTimeout(() => {
+    if (mailReg.test(value)) {
+      callback();
+    } else {
+      callback(new Error("请输入正确的邮箱格式"));
+    }
+  }, 100);
+}

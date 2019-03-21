@@ -49,7 +49,7 @@
           :close-on-click-modal="closeOn"
           width="60%"
         >
-          <el-form :model="Data">
+          <el-form :model="Data" ref="Data" :rules="Rules">
             <el-form-item>
               <div>
                 <div style="border-bottom:1px dashed #ccc;margin-top:-20px;width:100%"></div>
@@ -60,12 +60,12 @@
             </el-form-item>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="登录名：" :label-width="formLabelWidth">
+                <el-form-item label="登录名：" :label-width="formLabelWidth" prop="username">
                   <el-input v-model="Data.username" class="diaInput" :disabled="disabled"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="状态：" :label-width="formLabelWidth">
+                <el-form-item label="状态：" :label-width="formLabelWidth" prop="enable">
                   <el-switch
                     v-model="Data.enable"
                     active-color="#13ce66"
@@ -79,7 +79,7 @@
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="Email：" :label-width="formLabelWidth">
+                <el-form-item label="Email：" :label-width="formLabelWidth" prop="email">
                   <el-input
                     v-model="Data.email"
                     autocomplete="off"
@@ -89,7 +89,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="联系电话：" :label-width="formLabelWidth">
+                <el-form-item label="联系电话：" :label-width="formLabelWidth" prop="phoneNumber">
                   <el-input
                     v-model="Data.phoneNumber"
                     autocomplete="off"
@@ -101,7 +101,7 @@
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="注册时间：" :label-width="formLabelWidth">
+                <el-form-item label="注册时间：" :label-width="formLabelWidth" prop="registeryDate">
                   <el-date-picker
                     v-model="Data.registeryDate"
                     type="date"
@@ -111,7 +111,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="生日：" :label-width="formLabelWidth">
+                <el-form-item label="生日：" :label-width="formLabelWidth" prop="birthday">
                   <el-date-picker
                     v-model="Data.birthday"
                     type="date"
@@ -123,7 +123,7 @@
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="住址：" :label-width="formLabelWidth">
+                <el-form-item label="住址：" :label-width="formLabelWidth" prop="address">
                   <el-input
                     v-model="Data.address"
                     autocomplete="off"
@@ -133,7 +133,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="真实姓名：" :label-width="formLabelWidth">
+                <el-form-item label="真实姓名：" :label-width="formLabelWidth" prop="realName">
                   <el-input
                     v-model="Data.realName"
                     autocomplete="off"
@@ -145,7 +145,7 @@
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="qq号：" :label-width="formLabelWidth">
+                <el-form-item label="qq号：" :label-width="formLabelWidth" prop="qq">
                   <el-input
                     v-model="Data.qq"
                     autocomplete="off"
@@ -155,7 +155,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="性别：" :label-width="formLabelWidth">
+                <el-form-item label="性别：" :label-width="formLabelWidth" prop="sex">
                   <el-select
                     v-model="Data.sex"
                     autocomplete="off"
@@ -170,7 +170,7 @@
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="学院：" :label-width="formLabelWidth">
+                <el-form-item label="学院：" :label-width="formLabelWidth" prop="college">
                   <el-input
                     v-model="Data.college"
                     autocomplete="off"
@@ -180,21 +180,9 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="班级：" :label-width="formLabelWidth">
-                  <el-select
-                    v-model="Data.myClass"
-                    autocomplete="off"
-                    class="diaInput"
-                    :disabled="disabled"
-                  ></el-select>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="职务：" :label-width="formLabelWidth">
+                <el-form-item label="班级：" :label-width="formLabelWidth" prop="myClass">
                   <el-input
-                    v-model="Data.position"
+                    v-model="Data.myClass"
                     autocomplete="off"
                     class="diaInput"
                     :disabled="disabled"
@@ -203,8 +191,20 @@
               </el-col>
             </el-row>
             <el-row>
+              <el-col :span="12">
+                <el-form-item label="职务：" :label-width="formLabelWidth" prop="position">
+                  <el-input
+                    v-model="Data.position"
+                    autocomplete="off"
+                    class="diaInput"
+                    disabled
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
               <el-col :span="24">
-                <el-form-item label="个人简介：" :label-width="formLabelWidth">
+                <el-form-item label="个人简介：" :label-width="formLabelWidth" prop="introduction">
                   <el-input
                     type="textarea"
                     :rows="4"
@@ -218,8 +218,8 @@
             </el-row>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="cancel('Data')">取 消</el-button>
-            <el-button type="primary" @click="submit('Data')">确 定</el-button>
+            <el-button @click="cancel('Data')" >{{btnName}}</el-button>
+            <el-button type="primary" v-if="title ==='编辑成员信息'" @click="submit('Data')">确 定</el-button>
           </div>
         </el-dialog>
         <div class="list">
@@ -276,10 +276,12 @@ import { getMemberList, deleteUser } from "@/api/member";
 import { updateInfo } from "@/api/login";
 import { parseTime } from "@/utils/index";
 import { Message } from "element-ui";
+import { checkQQ,checkEmail,checkPhone,checkUsername } from "@/utils/validate";
 
 export default {
   data() {
     return {
+      btnName:"取消",
       //总页数
       total: 40,
       title: "",
@@ -315,7 +317,7 @@ export default {
         myClass: "",
         sex: "",
         introduction: "",
-        position: ""
+        position: "社员"
       },
       ResetData: {
         userId: "",
@@ -335,7 +337,37 @@ export default {
         myClass: "",
         sex: "",
         introduction: "",
-        position: ""
+        position: "社员"
+      },
+      Rules: {
+        realName: [
+          { required: true, message: "请输入姓名", trigger: "blur" },
+          { min: 2, max: 7, message: "长度在2-7个字符之间", trigger: "blur" }
+        ],
+        phoneNumber: [
+          { required: true, validator: checkPhone, trigger: "blur" }
+        ],
+        username: [
+          { required: true, validator: checkUsername, trigger: "blur" }
+        ],
+        email: [{ required: true, validator: checkEmail, trigger: "blur" }],
+        birthday: [
+          { required: true, message: "出生日期不能为空", trigger: "blur" }
+        ],
+        address: [
+          { required: true, message: "家庭住址不能为空", trigger: "blur" },
+          { min: 2, max: 25, message: "长度在2-25个字符之间", trigger: "blur" }
+        ],
+        qq: [
+          { required: true, validator: checkQQ, trigger: "blur" },
+          ,
+          { min: 2, max: 25, message: "长度在2-25个字符之间", trigger: "blur" }
+        ],
+        sex: [{ required: true, message: "性别不能为空", trigger: "blur" }],
+        introduction: [
+          { required: true, message: "简介不能为空", trigger: "blur" },
+          { min: 2, max: 25, message: "长度在2-25个字符之间", trigger: "blur" }
+        ]
       }
     };
   },
@@ -416,11 +448,13 @@ export default {
       this.dialogFormVisible = true;
       this.disabled = true;
       this.title = "查看成员信息";
+      this.btnName = "关闭";
     },
     update(row, index) {
       this.Data = JSON.parse(JSON.stringify(row));
       this.dialogFormVisible = true;
       this.title = "编辑成员信息";
+      this.btnName = "取消";
     },
     del(row) {
       this.$confirm("此操作将永久删除改数据, 是否继续?", "提示", {
@@ -440,8 +474,8 @@ export default {
             })
             .catch(error => {
               this.$message({
-                type: "success",
-                message: "删除成功!"
+                type: "error",
+                message: "删除失败!"
               });
             });
         })
