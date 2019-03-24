@@ -154,7 +154,7 @@
       <el-button
         type="primary"
         icon="el-icon-edit"
-        @click="dialogFormVisible = true"
+        @click="modify()"
         style="margin:20px 30px 20px 0px;float:right"
       >修改个人信息</el-button>
 
@@ -174,15 +174,32 @@
           <el-form-item label="email" :label-width="formLabelWidth" prop="email">
             <el-input v-model="PeronForm.email" autocomplete="off"></el-input>
           </el-form-item>
-              <el-form-item label="学院" :label-width="formLabelWidth" prop="collegeId">
-                <el-select v-model="PeronForm.collegeId" placeholder="请选择学院" class="box">
-                </el-select>
-              </el-form-item>
-              <el-form-item label="班级" :label-width="formLabelWidth" prop="myclassId" >
-                <el-select v-model="PeronForm.myclassId" placeholder="请选择班级" class="box">
-                </el-select>
-              </el-form-item>
-          <el-form-item label="出生日期" :label-width="formLabelWidth" prop="birthday" >
+          <el-form-item label="学院" :label-width="formLabelWidth" prop="collegeId" required>
+            <el-select
+              v-model="PeronForm.collegeId"
+              placeholder="请选择学院"
+              class="box"
+              @change="collegeChange(PeronForm.collegeId)"
+            >
+              <el-option
+                v-for="college in colleges"
+                :key="college.collegeId"
+                :label="college.collegeName"
+                :value="college.collegeId"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="班级" :label-width="formLabelWidth" prop="myclassId">
+            <el-select v-model="PeronForm.myclassId" class="box"  @change="myclassChange(PeronForm.myclassId)">
+              <el-option
+                v-for="myClass in myClasses"
+                :key="myClass.classId"
+                :label="myClass.className"
+                :value="myClass.classId"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="出生日期" :label-width="formLabelWidth" prop="birthday">
             <el-date-picker
               v-model="PeronForm.birthday"
               type="date"
@@ -223,6 +240,8 @@ import ImageCropper from "@/components/ImageCropper";
 import { Message } from "element-ui";
 import Mallki from "@/components/TextHoverEffect/Mallki";
 import { parseTime } from "@/utils/index";
+import { getMyclasses } from "@/api/myclass";
+import { getColleges } from "@/api/college";
 import { checkQQ, checkEmail, checkPhone } from "@/utils/validate";
 
 export default {
@@ -246,17 +265,24 @@ export default {
         birthday: "",
         address: "",
         qq: "",
-        college: "",
-        myClass: "",
         sex: "",
         introduction: "",
         position: "",
-        headPortrait: ""
+        headPortrait: "",
+        collegeId: "",
+        myclassId: "",
+        college:"",
+        myclass:""
       },
+      myClasses: [],
+      colleges: [],
       Rules: {
         realName: [
           { required: true, message: "请输入姓名", trigger: "blur" },
           { min: 2, max: 7, message: "长度在2-7个字符之间", trigger: "blur" }
+        ],
+        myclassId: [
+          { required: true, message: "班级不能为空", trigger: "blur" }
         ],
         phoneNumber: [
           { required: true, validator: checkPhone, trigger: "blur" }
@@ -287,10 +313,62 @@ export default {
   },
   created: function() {
     this.getInfo();
+    this.getColleges();
   },
   methods: {
+    modify() {
+      this.dialogFormVisible = true;
+      this.getMyclasse(this.PeronForm.collegeId);
+    },
+    // 班级下拉框发生变化
+    myclassChange(val){
+ // 获取到select框的值，并且赋给所属学院
+      var obj = {};
+      obj = this.myClasses.find(function(myclass) {
+        return myclass.classId === val;
+      });
+      this.PeronForm.myClass = obj.className;
+    },
+    // 学院下拉框发生变化
+    collegeChange(val) {
+      this.PeronForm.myclassId = "";
+      this.getMyclasse(val);
+      // 获取到select框的值，并且赋给所属学院
+      var obj = {};
+      obj = this.colleges.find(function(college) {
+        return college.collegeId === val;
+      });
+      this.PeronForm.college = obj.collegeName;
+    },
+    // 获取指定年级的班级信息
+    getMyclasse(val) {
+      getMyclasses(val)
+        .then(response => {
+          this.myClasses = response.result;
+        })
+        .catch(error => {
+          Message({
+            message: response.message,
+            type: "error",
+            duration: 3 * 1000
+          });
+        });
+    },
+    // 获取所有学院信息
+    getColleges() {
+      getColleges()
+        .then(response => {
+          this.colleges = response.result;
+        })
+        .catch(error => {
+          Message({
+            message: response.message,
+            type: "error",
+            duration: 3 * 1000
+          });
+        });
+    },
     // 头像上传的方法
-
     cropSuccess(resData) {
       this.imagecropperShow = false;
       this.imagecropperKey = this.imagecropperKey + 1;
@@ -362,8 +440,8 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.box{
-  width: 100%
+.box {
+  width: 100%;
 }
 ._top {
   margin-top: 20px;

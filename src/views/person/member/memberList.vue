@@ -8,10 +8,35 @@
             <el-input v-model="searchConditions.realName" placeholder="请填写姓名" class="input"></el-input>
           </el-form-item>
           <el-form-item label="学院：">
-            <el-input v-model="searchConditions.college" placeholder="请填写学院" class="input"></el-input>
+            <el-select
+              v-model="searchConditions.collegeId"
+              clearable
+              placeholder="请填写学院"
+              class="input"
+              @change="collegeChange"
+            >
+              <el-option
+                v-for="college in colleges"
+                :key="college.collegeId"
+                :label="college.collegeName"
+                :value="college.collegeId"
+              ></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="班级：">
-            <el-input v-model="searchConditions.myClass" placeholder="请填写班级" class="input"></el-input>
+            <el-select
+              v-model="searchConditions.myclassId"
+              placeholder="请填写班级"
+              class="input"
+              clearable
+            >
+              <el-option
+                v-for="myClass in myClasses"
+                :key="myClass.classId"
+                :label="myClass.className"
+                :value="myClass.classId"
+              ></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="状态：">
             <el-select
@@ -40,7 +65,7 @@
       </div>
       <div class="info-list">
         <div class="addMember">
-          <el-button class="searchButton" type="primary" @click="addMember()">添加成员</el-button>
+          <!-- <el-button class="searchButton" type="primary" @click="addMember()">添加成员</el-button> -->
         </div>
         <el-dialog
           :title="title"
@@ -106,7 +131,7 @@
                     v-model="Data.registeryDate"
                     type="date"
                     class="date-picker"
-                    :disabled="disabled"
+                    disabled
                   ></el-date-picker>
                 </el-form-item>
               </el-col>
@@ -171,34 +196,44 @@
             <el-row>
               <el-col :span="12">
                 <el-form-item label="学院：" :label-width="formLabelWidth" prop="college">
-                  <el-input
-                    v-model="Data.college"
+                  <el-select
+                    v-model="Data.collegeId"
                     autocomplete="off"
                     class="diaInput"
                     :disabled="disabled"
-                  ></el-input>
+                    @change="collegeChange"
+                  >
+                    <el-option
+                      v-for="college in colleges"
+                      :key="college.collegeId"
+                      :label="college.collegeName"
+                      :value="college.collegeId"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="班级：" :label-width="formLabelWidth" prop="myClass">
-                  <el-input
-                    v-model="Data.myClass"
+                  <el-select
+                    v-model="Data.myclassId"
                     autocomplete="off"
                     class="diaInput"
                     :disabled="disabled"
-                  ></el-input>
+                  >
+                    <el-option
+                      v-for="myClass in myClasses"
+                      :key="myClass.classId"
+                      :label="myClass.className"
+                      :value="myClass.classId"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
                 <el-form-item label="职务：" :label-width="formLabelWidth" prop="position">
-                  <el-input
-                    v-model="Data.position"
-                    autocomplete="off"
-                    class="diaInput"
-                    disabled
-                  ></el-input>
+                  <el-input v-model="Data.position" autocomplete="off" class="diaInput" disabled></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -218,7 +253,7 @@
             </el-row>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="cancel('Data')" >{{btnName}}</el-button>
+            <el-button @click="cancel('Data')">{{btnName}}</el-button>
             <el-button type="primary" v-if="title ==='编辑成员信息'" @click="submit('Data')">确 定</el-button>
           </div>
         </el-dialog>
@@ -276,12 +311,19 @@ import { getMemberList, deleteUser } from "@/api/member";
 import { updateInfo } from "@/api/login";
 import { parseTime } from "@/utils/index";
 import { Message } from "element-ui";
-import { checkQQ,checkEmail,checkPhone,checkUsername } from "@/utils/validate";
+import { getMyclasses } from "@/api/myclass";
+import { getColleges } from "@/api/college";
+import {
+  checkQQ,
+  checkEmail,
+  checkPhone,
+  checkUsername
+} from "@/utils/validate";
 
 export default {
   data() {
     return {
-      btnName:"取消",
+      btnName: "取消",
       //总页数
       total: 40,
       title: "",
@@ -292,9 +334,10 @@ export default {
       formLabelWidth: "100px",
       showData: [],
       searchConditions: {
+        associationId: "",
         realName: "",
-        college: "",
-        myClass: "",
+        collegeId: "",
+        myclassId: "",
         enable: "",
         currentPage: 1,
         pageSize: 5
@@ -319,6 +362,8 @@ export default {
         introduction: "",
         position: "社员"
       },
+      colleges: [],
+      myClasses: [],
       ResetData: {
         userId: "",
         authId: "",
@@ -377,6 +422,9 @@ export default {
       if (newVal == false) {
         this.Data = JSON.parse(JSON.stringify(this.ResetData));
         this.disabled = false;
+        this.getColleges();
+        this.colleges = [];
+        this.myClasses = [];
       }
     }
   },
@@ -389,8 +437,42 @@ export default {
   created() {
     //页面加载时查询数据
     this.getMemberList();
+    this.getColleges();
   },
   methods: {
+    collegeChange(collegeId) {
+      this.searchConditions.myclassId = "";
+      this.Data.myclassId = "";
+      this.getMyclasse(collegeId);
+    },
+    // 获取指定年级的班级信息
+    getMyclasse(val) {
+      getMyclasses(val)
+        .then(response => {
+          this.myClasses = response.result;
+        })
+        .catch(error => {
+          Message({
+            message: response.message,
+            type: "error",
+            duration: 3 * 1000
+          });
+        });
+    },
+    // 获取所有学院信息
+    getColleges() {
+      getColleges()
+        .then(response => {
+          this.colleges = response.result;
+        })
+        .catch(error => {
+          Message({
+            message: response.message,
+            type: "error",
+            duration: 3 * 1000
+          });
+        });
+    },
     //手动点击查询
     query() {
       this.getMemberList();
@@ -402,9 +484,10 @@ export default {
     },
     // 获取成员列表
     getMemberList() {
+      this.searchConditions.associationId = sessionStorage.getItem("assocId");
       getMemberList(this.searchConditions)
         .then(response => {
-          this.showData = response.result.content;
+          this.showData = response.result.contents;
           this.total = response.result.totalElements;
         })
         .catch(error => {
@@ -453,6 +536,7 @@ export default {
     update(row, index) {
       this.Data = JSON.parse(JSON.stringify(row));
       this.dialogFormVisible = true;
+      this.getMyclasse(row.collegeId);
       this.title = "编辑成员信息";
       this.btnName = "取消";
     },

@@ -124,8 +124,8 @@
           <el-form-item label="社团地址" :label-width="formLabelWidth" prop="address">
             <el-input v-model="association.address" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="社团分类" :label-width="formLabelWidth" prop="category">
-            <el-select v-model="association.category" autocomplete="off">
+          <el-form-item label="社团分类" :label-width="formLabelWidth" prop="category" >
+            <el-select v-model="association.category" autocomplete="off" style="width:100%">
               <el-option
                 v-for="category in categorys"
                 :key="category.categoryId"
