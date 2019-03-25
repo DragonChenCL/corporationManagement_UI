@@ -63,7 +63,7 @@
               <el-col :span="12">
                 <div class="grid-content bg-purple">
                   所属社团 ：
-                  <mallki class-name="mallki-text" :text="PeronForm.association"/>
+                  <mallki class-name="mallki-text" :text="PeronForm.userAssocs[0].assocName"/>
                 </div>
               </el-col>
               <el-col :span="12">
@@ -260,7 +260,6 @@ export default {
         userId: "",
         realName: "",
         phoneNumber: "",
-        association: "",
         email: "",
         birthday: "",
         address: "",
@@ -272,7 +271,8 @@ export default {
         collegeId: "",
         myclassId: "",
         college:"",
-        myclass:""
+        myclass:"",
+        userAssocs:[]
       },
       myClasses: [],
       colleges: [],

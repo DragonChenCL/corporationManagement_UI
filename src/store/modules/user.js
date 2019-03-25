@@ -60,8 +60,8 @@ const user = {
           }
           commit('SET_NAME', data.username)
           commit('SET_AVATAR', process.env.BASE_API + data.headPortrait) 
-          commit('SET_ASSOCID',response.result.associationId)
-          sessionStorage.setItem("assocId",response.result.associationId)
+          commit('SET_ASSOCID',response.result.userAssocs[0].assocId)
+          sessionStorage.setItem("assocId",response.result.userAssocs[0].assocId)
           resolve(response)
         }).catch(error => {
           reject(error)

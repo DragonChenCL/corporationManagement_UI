@@ -339,6 +339,7 @@ export default {
         collegeId: "",
         myclassId: "",
         enable: "",
+        status:"审核成功",
         currentPage: 1,
         pageSize: 5
       },
