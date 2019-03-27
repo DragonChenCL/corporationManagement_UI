@@ -1,5 +1,6 @@
 <template>
   <div class="attachment-container">
+    <el-card class="box-card" shadow="hover">
     <title-box titleValue="成员管理-成员列表"></title-box>
     <div class="base-attachment-container">
       <div class="form-container">
@@ -64,9 +65,6 @@
         </el-form>
       </div>
       <div class="info-list">
-        <div class="addMember">
-          <!-- <el-button class="searchButton" type="primary" @click="addMember()">添加成员</el-button> -->
-        </div>
         <el-dialog
           :title="title"
           :visible.sync="dialogFormVisible"
@@ -302,6 +300,7 @@
         ></el-pagination>
       </div>
     </div>
+    </el-card>
   </div>
 </template>
 
@@ -587,6 +586,14 @@ export default {
 </script>
 
 <style scoped>
+.attachment-container{
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  background-color: #e3e3e3;
+  min-height: 100vh;
+  padding: 50px 60px 0px;
+  color: #606266;
+}
 .form-container {
   margin-top: 20px;
   margin-left: 30px;
@@ -606,7 +613,7 @@ export default {
   justify-content: center;
 }
 .input {
-  width: 160px;
+  width: 150px;
 }
 .diaInput {
   width: 100%;
