@@ -28,6 +28,15 @@ export function updateInfo(PeronForm) {
   }) 
 }
 
+//更新用户社团状态
+export function updateStatus(userStatusForm) {
+  return request({
+    url: '/user/status',
+    method: 'post',
+    data: userStatusForm
+  }) 
+}
+
 export function logout() {
   return request({
     url: '/auth/logout',

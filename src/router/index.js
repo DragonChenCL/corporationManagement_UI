@@ -64,7 +64,7 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/peron',
+    path: '/person',
     component: Layout,
     redirect: '/person/member',
     name:'personManage',
