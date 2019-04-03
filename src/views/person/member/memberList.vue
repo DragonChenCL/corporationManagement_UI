@@ -12,7 +12,7 @@
             <el-select
               v-model="searchConditions.collegeId"
               clearable
-              placeholder="请填写学院"
+              placeholder="请选择学院"
               class="input"
               @change="collegeChange"
             >
@@ -27,7 +27,7 @@
           <el-form-item label="班级：">
             <el-select
               v-model="searchConditions.myclassId"
-              placeholder="请填写班级"
+              placeholder="请选择班级"
               class="input"
               clearable
             >
@@ -50,15 +50,6 @@
               <el-option value="1" label="启用"></el-option>
             </el-select>
           </el-form-item>
-          <!-- <el-form-item label="注册日期：">
-            <el-date-picker
-              v-model="searchConditions.registeryDate"
-              type="date"
-              placeholder="选择注册日期"
-              class="date-picker"
-              style="width:150px"
-            ></el-date-picker>
-          </el-form-item>-->
           <el-form-item>
             <el-button class="searchButton" type="primary" @click="query()">查询</el-button>
           </el-form-item>
