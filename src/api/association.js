@@ -23,3 +23,19 @@ export function getAssociationInfo(id) {
       data: AssociationForm
     })
   }
+
+  export function findAssociationList(AssociationInfoDTO) {
+    return request({ 
+      url: '/assoc/list',
+      method: 'post',
+      data: AssociationInfoDTO
+    })
+  }
+
+  export function disAssociation(id) {
+    return request({
+      url: '/assoc/dis',
+      method: 'get',
+      params: { id }
+    })
+  }

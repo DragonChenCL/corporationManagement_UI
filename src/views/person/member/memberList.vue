@@ -1,7 +1,7 @@
 <template>
   <div class="attachment-container">
     <el-card class="box-card" shadow="hover">
-    <title-box titleValue="成员管理-成员列表"></title-box>
+    <title-box titleValue="成员管理-列表"></title-box>
     <div class="base-attachment-container">
       <div class="form-container">
         <el-form :inline="true" :model="searchConditions">

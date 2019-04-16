@@ -24,7 +24,6 @@ import Layout from '../views/layout/Layout'
 **/
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
-  { path: '/404', component: () => import('@/views/404'), hidden: true },
   {
     path: '/redirect',
     component: Layout,
@@ -46,31 +45,59 @@ export const constantRouterMap = [
     children: [{
       path: 'dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title:'个人信息', icon: 'association-info' }
-}]
+      meta: { title: '个人信息', icon: 'association-info' }
+    }]
   },
+]
 
+export default new Router({
+  // mode: 'history', //后端支持可开
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRouterMap
+})
+
+export const asyncRouterMap = [
+  { path: '/404', component: () => import('@/views/404'), hidden: true },
+  { path: '*', redirect: '/404', hidden: true },
   {
     path: '/corporation',
     component: Layout,
+    meta: {
+      roles:['ADMIN']
+    },
     children: [
       {
         path: 'info',
         name: 'Info',
         component: () => import('@/views/corporation/index'),
-        meta: { title: '社团信息', icon: 'association-info' }
+        meta: { title: '社团信息', icon: 'association-info'}
       }
     ]
   },
-
+  {
+    path: '/corporationManage',
+    component: Layout,
+    meta: {
+      roles:['ADMIN']
+    },
+    children: [
+      {
+        path: 'manage',
+        name: 'manage',
+        component: () => import('@/views/corporation/manage'),
+        meta: { title: '社团管理', icon: 'association-info'}
+      }
+    ]
+  },
+  
   {
     path: '/person',
     component: Layout,
     redirect: '/person/member',
-    name:'personManage',
+    name: 'personManage',
     meta: {
       title: '成员管理',
-      icon: '成员管理'
+      icon: '成员管理', 
     },
     children: [
       {
@@ -78,9 +105,9 @@ export const constantRouterMap = [
         name: 'member',
         component: () => import('@/views/person/member/memberList'),
         meta: { title: '成员列表', icon: 'person' }
-      },{
+      }, {
         path: 'apply',
-        name: 'apply',
+        name: 'memberApply',
         component: () => import('@/views/person/apply/applyList'),
         meta: { title: '成员申请', icon: '申请' }
       }
@@ -90,7 +117,7 @@ export const constantRouterMap = [
     path: '/event',
     component: Layout,
     redirect: '/event/eventList',
-    name:'eventManage',
+    name: 'eventManage',
     meta: {
       title: '活动管理',
       icon: '社团活动'
@@ -101,9 +128,9 @@ export const constantRouterMap = [
         name: 'eventList',
         component: () => import('@/views/event/eventList/eventList'),
         meta: { title: '活动列表', icon: '活动-列表' }
-      },{
+      }, {
         path: 'apply',
-        name: 'apply',
+        name: 'eventApply',
         component: () => import('@/views/event/eventApplay/eventApplay'),
         meta: { title: '活动申请', icon: '活动申请' }
       }
@@ -113,7 +140,7 @@ export const constantRouterMap = [
     path: '/finance',
     component: Layout,
     redirect: '/finance/financeIn',
-    name:'financeManage',
+    name: 'financeManage',
     meta: {
       title: '财政管理',
       icon: '社团账户'
@@ -124,9 +151,9 @@ export const constantRouterMap = [
         name: 'finaceIn',
         component: () => import('@/views/finance/financeIn'),
         meta: { title: '入账管理', icon: '收入账单' }
-      },{
-        path: 'apply',
-        name: 'apply',
+      }, {
+        path: 'finaceOut',
+        name: 'finaceOut',
         component: () => import('@/views/finance/financeOut'),
         meta: { title: '出帐管理', icon: '支出账单' }
       }
@@ -135,8 +162,8 @@ export const constantRouterMap = [
   {
     path: '/news',
     component: Layout,
-    redirect: '/news/',
-    name:'newsManage',
+    redirect: '/news/newsList',
+    name: 'newsManage',
     meta: {
       title: '新闻管理',
       icon: '新闻'
@@ -147,7 +174,7 @@ export const constantRouterMap = [
         name: 'newsList',
         component: () => import('@/views/news/newsList'),
         meta: { title: '新闻列表', icon: '新闻列表' }
-      },{
+      }, {
         path: 'newNews',
         name: 'newNews',
         component: () => import('@/views/news/newNews'),
@@ -159,10 +186,11 @@ export const constantRouterMap = [
     path: '/honor',
     component: Layout,
     redirect: '/honor/honorList',
-    name:'honorManage',
+    name: 'honorManage',
     meta: {
       title: '荣誉管理',
-      icon: '荣誉'
+      icon: '荣誉',
+      roles: ['ADMIN']
     },
     children: [
       {
@@ -170,20 +198,12 @@ export const constantRouterMap = [
         name: 'honorList',
         component: () => import('@/views/honor/honorList'),
         meta: { title: '荣誉列表', icon: '荣誉列表' }
-      },{
+      }, {
         path: 'apply',
-        name: 'apply',
+        name: 'honorApply',
         component: () => import('@/views/honor/newHonor'),
-        meta: { title: '新增荣誉', icon: '新增' }
+        meta: { title: '新增荣誉', icon: '新增'}
       }
     ]
-  },
-
-  { path: '*', redirect: '/404', hidden: true }
+  }
 ]
-
-export default new Router({
-  // mode: 'history', //后端支持可开
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})

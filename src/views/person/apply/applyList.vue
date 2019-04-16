@@ -1,7 +1,7 @@
 <template>
   <div class="attachment-container">
     <el-card class="box-card" shadow="hover">
-      <title-box titleValue="成员管理-成员申请"></title-box>
+      <title-box titleValue="成员管理-申请"></title-box>
       <div class="base-attachment-container">
         <div class="info-list">
           <div class="addMember"></div>
