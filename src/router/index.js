@@ -75,10 +75,57 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/categoryManage',
+    component: Layout,
+    meta: {
+      roles:['SYSADMIN']
+    },
+    children: [
+      {
+        path: 'category',
+        name: 'category',
+        component: () => import('@/views/category/categoryManage'),
+        meta: { title: '社团分类', icon: '成员管理'}
+      }
+    ]
+  },
+  {
+    path: '/collegeManage',
+    component: Layout,
+    meta: {
+      roles:['SYSADMIN']
+    },
+    children: [
+      {
+        path: 'collegeManage',
+        name: 'collegeManage',
+        component: () => import('@/views/classAndCollege/collegeManage'),
+        meta: { title: '班级管理', icon: '荣誉列表'}
+      }
+    ]
+  },
+
+  {
+    path: '/eventsManage',
+    component: Layout,
+    meta: {
+      roles:['SYSADMIN']
+    },
+    children: [
+      {
+        path: 'eventsManage',
+        name: 'eventsManage',
+        component: () => import('@/views/event/eventManage'),
+        meta: { title: '活动管理', icon: '活动-列表'}
+      }
+    ]
+  },
+
+  {
     path: '/corporationManage',
     component: Layout,
     meta: {
-      roles:['ADMIN']
+      roles:['SYSADMIN']
     },
     children: [
       {
@@ -89,7 +136,6 @@ export const asyncRouterMap = [
       }
     ]
   },
-  
   {
     path: '/person',
     component: Layout,
@@ -98,6 +144,7 @@ export const asyncRouterMap = [
     meta: {
       title: '成员管理',
       icon: '成员管理', 
+      roles:['ADMIN']
     },
     children: [
       {
@@ -120,7 +167,8 @@ export const asyncRouterMap = [
     name: 'eventManage',
     meta: {
       title: '活动管理',
-      icon: '社团活动'
+      icon: '社团活动',
+      roles:['ADMIN']
     },
     children: [
       {
@@ -129,10 +177,16 @@ export const asyncRouterMap = [
         component: () => import('@/views/event/eventList/eventList'),
         meta: { title: '活动列表', icon: '活动-列表' }
       }, {
-        path: 'apply',
+        path: 'eventApply',
         name: 'eventApply',
         component: () => import('@/views/event/eventApplay/eventApplay'),
         meta: { title: '活动申请', icon: '活动申请' }
+      },
+      {
+        path: 'apply',
+        name: 'apply',
+        component: () => import('@/views/event/apply/apply'),
+        meta: { title: '评论管理', icon: '评论' }
       }
     ]
   },
@@ -143,7 +197,8 @@ export const asyncRouterMap = [
     name: 'financeManage',
     meta: {
       title: '财政管理',
-      icon: '社团账户'
+      icon: '社团账户',
+      roles:['ADMIN']
     },
     children: [
       {
@@ -166,7 +221,8 @@ export const asyncRouterMap = [
     name: 'newsManage',
     meta: {
       title: '新闻管理',
-      icon: '新闻'
+      icon: '新闻',
+      roles:['ADMIN']
     },
     children: [
       {
@@ -182,28 +238,28 @@ export const asyncRouterMap = [
       }
     ]
   },
-  {
-    path: '/honor',
-    component: Layout,
-    redirect: '/honor/honorList',
-    name: 'honorManage',
-    meta: {
-      title: '荣誉管理',
-      icon: '荣誉',
-      roles: ['ADMIN']
-    },
-    children: [
-      {
-        path: 'honorList',
-        name: 'honorList',
-        component: () => import('@/views/honor/honorList'),
-        meta: { title: '荣誉列表', icon: '荣誉列表' }
-      }, {
-        path: 'apply',
-        name: 'honorApply',
-        component: () => import('@/views/honor/newHonor'),
-        meta: { title: '新增荣誉', icon: '新增'}
-      }
-    ]
-  }
+  // {
+  //   path: '/honor',
+  //   component: Layout,
+  //   redirect: '/honor/honorList',
+  //   name: 'honorManage',
+  //   meta: {
+  //     title: '荣誉管理',
+  //     icon: '荣誉',
+  //     roles: ['ADMIN']
+  //   },
+  //   children: [
+  //     {
+  //       path: 'honorList',
+  //       name: 'honorList',
+  //       component: () => import('@/views/honor/honorList'),
+  //       meta: { title: '荣誉列表', icon: '荣誉列表' }
+  //     }, {
+  //       path: 'apply',
+  //       name: 'honorApply',
+  //       component: () => import('@/views/honor/newHonor'),
+  //       meta: { title: '新增荣誉', icon: '新增'}
+  //     }
+  //   ]
+  // }
 ]

@@ -8,6 +8,14 @@ export function getEvents(eventCondition) {
     })
   }
 
+  export function getEventsBySys(eventCondition) {
+    return request({
+      url: '/event/detailsBySys',
+      method: 'post',
+      data: eventCondition
+    })
+  }
+
   export function applyEvents(eventForm) {
     return request({
       url: '/event/apply',
@@ -29,5 +37,13 @@ export function getEvents(eventCondition) {
       url: '/event/userEventStatus',
       method: 'post',
       data: userEvent
+    })
+  }
+
+  export function eventStatus(statusCondition) {
+    return request({
+      url: '/event/eventStatus',
+      method: 'post',
+      data: statusCondition
     })
   }

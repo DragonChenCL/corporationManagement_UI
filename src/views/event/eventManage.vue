@@ -6,13 +6,31 @@
         <div class="form-container">
           <el-form :model="searchConditions" label-width="90px">
             <el-row>
-              <el-col :span="6">
+              <el-col :span="5">
                 <el-form-item label="活动名称：">
                   <el-input
                     v-model="searchConditions.eventName"
                     placeholder="请填写活动名称"
                     class="input"
                   ></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="5">
+                <el-form-item label="社团名称：">
+                  <el-select
+                    v-model="searchConditions.assocId"
+                    placeholder="请选择社团名称"
+                    class="input"
+                    clearable
+                  >
+                    <el-option 
+                    v-for="assoc in assocOptions"
+                    :key="assoc.associationId"
+                    :label="assoc.assName"
+                    :value="assoc.associationId"
+                    >
+                    </el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
@@ -28,8 +46,8 @@
                   ></el-date-picker>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
-                <el-form-item label="状态：">
+              <el-col :span="5">
+                <el-form-item label="状态：" label-width="60px">
                   <el-select
                     v-model="searchConditions.status"
                     clearable
@@ -42,8 +60,8 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
-                <el-form-item>
+              <el-col :span="2">
+                <el-form-item label-width="15px">
                   <el-button class="searchButton" type="primary" @click="query()">查询</el-button>
                 </el-form-item>
               </el-col>
@@ -149,15 +167,13 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
               <el-button @click="dialogFormVisible = false">取消</el-button>
-              <el-button v-if="this.title == '活动申请' " @click="applyEvent()" type="primary">确认</el-button>
             </div>
           </el-dialog>
-          <div class="addButton">
-            <el-button type="primary" @click="addEvent()">申请活动</el-button>
-          </div>
+          
           <div class="list">
             <el-table :data="showData" style="width: 100%" size="small" border stripe>
               <el-table-column align="center" prop="eventName" label="活动名称"></el-table-column>
+              <el-table-column align="center" prop="assName" label="社团名称"></el-table-column>
               <el-table-column align="center" prop="address" label="活动地点"></el-table-column>
               <el-table-column align="center" prop="responsiblePerson" label="负责人"></el-table-column>
               <el-table-column align="center" prop="startDate" label="开始时间">
@@ -181,11 +197,36 @@
                     @click="getNoticeInfo(scope.row,scope.$index)"
                     style="color:#67C23A"
                   >查看</el-button>
+                   <el-button v-if="scope.row.status == '待审核'" type="text" size="mini" @click="pass(scope.row)">通过</el-button>
+                  <el-button
+                    type="text"
+                    v-if="scope.row.status == '待审核'"
+                    size="mini"
+                    style="color:#F56C6C"
+                    @click="noPass(scope.row)"
+                  >不通过</el-button>
                 </template>
               </el-table-column>
             </el-table>
           </div>
         </div>
+         <el-dialog
+            title="不通过理由"
+            :visible.sync="eventVisiable"
+            top="6vh"
+            :close-on-click-modal="closeOn"
+            width="60%"
+          >
+            <el-form :model="eventForm">
+              <el-form-item label="留言" label-width="75px" prop="message" required status-icon>
+                <el-input v-model="eventForm.message" placeholder="请输入不通过原因"></el-input>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="eventVisiable = false">取消</el-button>
+              <el-button type="primary" @click="eventStatusSubmit()">确定</el-button>
+            </div>
+          </el-dialog>
         <div class="page-container">
           <el-pagination
             @size-change="handleSizeChange()"
@@ -205,7 +246,8 @@
 <script>
 import titleBox from "@/components/titleBox/titleBox";
 import { Message } from "element-ui";
-import { getEvents, applyEvents } from "@/api/event";
+import { getEvents, applyEvents,getEventsBySys,eventStatus } from "@/api/event";
+import { findAssocAll } from "@/api/association";
 import { parseTime } from "@/utils/index";
 
 export default {
@@ -214,6 +256,7 @@ export default {
       //总页数
       total: 40,
       title: "",
+      eventVisiable:false,
       disabled: false,
       closeOn: false,
       dialogTableVisible: false,
@@ -221,6 +264,7 @@ export default {
       formLabelWidth: "100px",
       showData: [],
       searchConditions: {
+        assocName: "",
         assocId: "",
         eventName: "",
         startDate: "",
@@ -237,14 +281,21 @@ export default {
         content: "",
         exceptFunds: "",
         actualFunds: "",
-        associationId:""
+        associationId: ""
       },
-      ResetData: {}
+       eventForm: {
+        eventId: "",
+        message: "",
+        status: "",
+      },
+      ResetData: {},
+      assocOptions:[]
     };
   },
   created() {
     //页面加载时查询数据
-    this.getEvents();
+    this.getEventsBySys();
+    this.getAssocAll();
   },
   //时间过滤器
   filters: {
@@ -253,31 +304,54 @@ export default {
     }
   },
   methods: {
-    applyEvent() {
-      this.Data.associationId = sessionStorage.getItem("assocId");
-      applyEvents(this.Data)
-        .then(response => {
-          this.getEvents();
-          this.dialogFormVisible = false;
+      getAssocAll(){
+          findAssocAll().then(res =>{
+              this.assocOptions = [...res.result]
+          }).catch(error =>{
+               Message({
+                message: "获取社团信息失败！",
+                type: "error",
+                duration: 3 * 1000
+            });
+          })
+      },
+    eventStatusSubmit(){
+        this.eventStatus();
+        this.getEventsBySys();
+        this.eventVisiable = false;
+      },
+    eventStatus(){
+        eventStatus(this.eventForm)
+            .then(response => {
+           Message({
+            message: "状态更新成功！",
+            type: "success",
+            duration: 3 * 1000
+          });
         })
         .catch(error => {
           Message({
-            message: "申请失败！",
+            message: "状态更新失败！",
             type: "error",
             duration: 3 * 1000
           });
-          this.dialogFormVisible = false;
         });
     },
-    addEvent() {
-      this.Data = JSON.parse(JSON.stringify(this.ResetData));
-      this.title = "活动申请";
-      this.dialogFormVisible = true;
-      this.disabled = false;
+    pass(row){
+        this.eventForm.eventId = row.eventId;
+        this.eventForm.status = "审核成功";
+        this.eventForm.message = "恭喜";
+        this.eventStatus();
+        this.getEventsBySys();
+    },
+    noPass(row){
+        this.eventForm.eventId = row.eventId;
+        this.eventForm.status = "审核失败";
+        this.eventVisiable = true;
     },
     //手动点击查询
     query() {
-      this.getEvents();
+      this.getEventsBySys();
       Message({
         message: "查询成功！",
         type: "success",
@@ -285,11 +359,10 @@ export default {
       });
     },
     // 获取活动列表
-    getEvents() {
-      this.searchConditions.assocId = sessionStorage.getItem("assocId");
-      getEvents(this.searchConditions)
+    getEventsBySys() {
+      getEventsBySys(this.searchConditions)
         .then(response => {
-          this.showData = response.result.content;
+          this.showData = [...response.result.contents];
           this.total = response.result.totalElements;
         })
         .catch(error => {
@@ -363,7 +436,7 @@ export default {
 .date-picker {
   width: 285px;
 }
-.totalSum{
+.totalSum {
   display: flex;
 }
 </style>
