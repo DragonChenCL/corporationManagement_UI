@@ -23,3 +23,11 @@ export function updateNews(news) {
       data: condition
     })
   }
+
+  export function findNewsById(id) {
+    return request({
+      url: '/news/detail',
+      method: 'get',
+      params: { id }
+    })
+  }

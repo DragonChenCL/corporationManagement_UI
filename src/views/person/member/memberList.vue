@@ -273,7 +273,7 @@
                   style="color:#67C23A"
                 >查看</el-button>
                 <el-button type="text" size="mini" @click="update(scope.row,scope.$index)">编辑</el-button>
-                <el-button type="text" size="mini" style="color:#F56C6C" @click="del(scope.row)">删除</el-button>
+                <el-button type="text" size="mini" style="color:#F56C6C" @click="del(scope.row)">踢出</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -315,7 +315,7 @@ export default {
     return {
       btnName: "取消",
       //总页数
-      total: 40,
+      total: 0,
       title: "",
       disabled: false,
       closeOn: false,
@@ -348,7 +348,9 @@ export default {
         realName: "",
         qq: "",
         college: "",
+        collegeId:"",
         myClass: "",
+        myClassId:"",
         sex: "",
         introduction: "",
         position: "社员"
@@ -521,6 +523,7 @@ export default {
       this.Data = JSON.parse(JSON.stringify(row));
       this.dialogFormVisible = true;
       this.disabled = true;
+      this.getMyclasse(row.collegeId);
       this.title = "查看成员信息";
       this.btnName = "关闭";
     },
@@ -532,13 +535,13 @@ export default {
       this.btnName = "取消";
     },
     del(row) {
-      this.$confirm("此操作将永久删除改数据, 是否继续?", "提示", {
+      this.$confirm("您确定将"+row.realName+"踢出?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          deleteUser(row.userId)
+          deleteUser(row.userId , sessionStorage.getItem("assocId"))
             .then(response => {
               // 删除完成后重新拉取信息
               this.getMemberList();

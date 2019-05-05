@@ -8,6 +8,7 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '../views/layout/Layout'
+import SLayout from '../views/studentView/layout/Layout'
 
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
@@ -24,29 +25,68 @@ import Layout from '../views/layout/Layout'
 **/
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
+  {path : '/' , redirect :'/stu/'},
   {
-    path: '/redirect',
-    component: Layout,
+    path: '/stu',
+    component: SLayout,
     hidden: true,
     children: [
       {
-        path: '/redirect/:path*',
-        component: () => import('@/views/redirect/index')
+        path: '/',
+        name: 'dashbord',
+        component: () => import('@/views/studentView/dashbord/dashbord'),
+        meta: { title: '网站主页' }
+      },
+      {
+        path: '/stu/userinfo',
+        name: 'userinfo',
+        component: () => import('@/views/studentView/person/personInfo'),
+        meta: { title: '个人信息' }
+      },
+      {
+        path: '/stu/associations',
+        name: 'associations',
+        component: () => import('@/views/studentView/associations/associations'),
+        meta: { title: '所有社团' }
+      },
+      {
+        path: '/stu/associations/detail',
+        name: 'associationDetail',
+        component: () => import('@/views/studentView/associations/associationDetail'),
+        meta: { title: '社团详情' }
+      },
+      {
+        path: '/stu/events',
+        name: 'events',
+        component: () => import('@/views/studentView/events/events'),
+        meta: { title: '所有活动' }
+      },
+      {
+        path: '/stu/events/detail',
+        name: 'events',
+        component: () => import('@/views/studentView/events/eventDetail'),
+        meta: { title: '活动详情' }
+      },
+      {
+        path: '/stu/about',
+        name: 'about',
+        component: () => import('@/views/studentView/about/about'),
+        meta: { title: '关于本站' }
+      },
+      {
+        path: '/stu/newes/detail',
+        name: 'newDetail',
+        component: () => import('@/views/studentView/newes/newDetail'),
+        meta: { title: '新闻详情' }
+      },
+      {
+        path: '/stu/newes',
+        name: 'newes',
+        component: () => import('@/views/studentView/newes/newes'),
+        meta: { title: '所有新闻' }
       }
+      
     ]
-  },
-
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    name: 'Dashboard',
-    hidden: true,
-    children: [{
-      path: 'dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: '个人信息', icon: 'association-info' }
-    }]
   },
 ]
 
@@ -58,19 +98,42 @@ export default new Router({
 
 export const asyncRouterMap = [
   { path: '/404', component: () => import('@/views/404'), hidden: true },
+  {
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/redirect/:path*',
+        component: () => import('@/views/redirect/index')
+      }
+    ]
+  },
+  {
+    path: '/dashboard',
+    component: Layout,
+    redirect: '/dashboard/info',
+    name: 'Dashboard',
+    hidden: true,
+    children: [{
+      path: 'info',
+      component: () => import('@/views/dashboard/index'),
+      meta: { title: '个人信息', icon: 'association-info' }
+    }]
+  },
   { path: '*', redirect: '/404', hidden: true },
   {
     path: '/corporation',
     component: Layout,
     meta: {
-      roles:['ADMIN']
+      roles: ['ADMIN']
     },
     children: [
       {
         path: 'info',
         name: 'Info',
         component: () => import('@/views/corporation/index'),
-        meta: { title: '社团信息', icon: 'association-info'}
+        meta: { title: '社团信息', icon: 'association-info' }
       }
     ]
   },
@@ -78,14 +141,14 @@ export const asyncRouterMap = [
     path: '/categoryManage',
     component: Layout,
     meta: {
-      roles:['SYSADMIN']
+      roles: ['SYSADMIN']
     },
     children: [
       {
         path: 'category',
         name: 'category',
         component: () => import('@/views/category/categoryManage'),
-        meta: { title: '社团分类', icon: '成员管理'}
+        meta: { title: '社团分类', icon: '成员管理' }
       }
     ]
   },
@@ -93,14 +156,14 @@ export const asyncRouterMap = [
     path: '/collegeManage',
     component: Layout,
     meta: {
-      roles:['SYSADMIN']
+      roles: ['SYSADMIN']
     },
     children: [
       {
         path: 'collegeManage',
         name: 'collegeManage',
         component: () => import('@/views/classAndCollege/collegeManage'),
-        meta: { title: '班级管理', icon: '荣誉列表'}
+        meta: { title: '班级管理', icon: '荣誉列表' }
       }
     ]
   },
@@ -109,14 +172,14 @@ export const asyncRouterMap = [
     path: '/eventsManage',
     component: Layout,
     meta: {
-      roles:['SYSADMIN']
+      roles: ['SYSADMIN']
     },
     children: [
       {
         path: 'eventsManage',
         name: 'eventsManage',
         component: () => import('@/views/event/eventManage'),
-        meta: { title: '活动管理', icon: '活动-列表'}
+        meta: { title: '活动管理', icon: '活动-列表' }
       }
     ]
   },
@@ -125,14 +188,14 @@ export const asyncRouterMap = [
     path: '/corporationManage',
     component: Layout,
     meta: {
-      roles:['SYSADMIN']
+      roles: ['SYSADMIN']
     },
     children: [
       {
         path: 'manage',
         name: 'manage',
         component: () => import('@/views/corporation/manage'),
-        meta: { title: '社团管理', icon: 'association-info'}
+        meta: { title: '社团管理', icon: 'association-info' }
       }
     ]
   },
@@ -143,8 +206,8 @@ export const asyncRouterMap = [
     name: 'personManage',
     meta: {
       title: '成员管理',
-      icon: '成员管理', 
-      roles:['ADMIN']
+      icon: '成员管理',
+      roles: ['ADMIN']
     },
     children: [
       {
@@ -168,7 +231,7 @@ export const asyncRouterMap = [
     meta: {
       title: '活动管理',
       icon: '社团活动',
-      roles:['ADMIN']
+      roles: ['ADMIN']
     },
     children: [
       {
@@ -198,7 +261,7 @@ export const asyncRouterMap = [
     meta: {
       title: '财政管理',
       icon: '社团账户',
-      roles:['ADMIN']
+      roles: ['ADMIN']
     },
     children: [
       {
@@ -222,7 +285,7 @@ export const asyncRouterMap = [
     meta: {
       title: '新闻管理',
       icon: '新闻',
-      roles:['ADMIN']
+      roles: ['ADMIN']
     },
     children: [
       {

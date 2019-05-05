@@ -47,3 +47,11 @@ export function getEvents(eventCondition) {
       data: statusCondition
     })
   }
+
+  export function eventDetail(id) {
+    return request({
+      url: '/event/detail',
+      method: 'get',
+      params :{id}
+    })
+  }

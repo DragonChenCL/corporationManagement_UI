@@ -119,7 +119,7 @@ export default {
                     response.result.roles == "ADMIN" ||
                     response.result.roles == "SYSADMIN"
                   ) {
-                    this.$router.push({ path: "/" });
+                    this.$router.push({ path: "/dashboard/info" });
                   } else {
                     Message({
                       message: "您暂无权限登录后台",

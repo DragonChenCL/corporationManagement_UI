@@ -11,7 +11,7 @@
             :close-on-click-modal="closeOn"
             width="60%"
           >
-            <el-form :model="Data" ref="Data" :rules="Rules">
+            <el-form :model="Data" ref="Data">
               <el-form-item>
                 <div>
                   <div style="border-bottom:1px dashed #ccc;margin-top:-20px;width:100%"></div>
@@ -268,11 +268,11 @@ export default {
       });
     },
     handleSizeChange(val) {
-      this.getEvents();
+      this.getAllByPage();
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      this.getEvents();
+      this.getAllByPage();
       console.log(`当前页: ${val}`);
     }
   },

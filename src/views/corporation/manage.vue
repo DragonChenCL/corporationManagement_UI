@@ -357,7 +357,6 @@ export default {
     },
     // 获取社团列表
     geAssociationList() {
-      console.log("111");
       findAssociationList(this.searchConditions)
         .then(response => {
           this.showData = [...response.result.contents];
@@ -463,11 +462,11 @@ export default {
         });
     },
     handleSizeChange(val) {
-      this.getMemberList();
+      this.geAssociationList();
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      this.getMemberList();
+      this.geAssociationList();
       console.log(`当前页: ${val}`);
     }
   },

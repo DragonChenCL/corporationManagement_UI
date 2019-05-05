@@ -9,11 +9,29 @@ export function getMemberList(MemberListCondition) {
     }) 
   }
 
-//获取成员列表
-export function deleteUser(userId) {
+//删除成员信息
+export function deleteUser(userId ,assocId) {
   return request({
-    url: '/user/detail',
+    url: '/user/delete',
     method: 'delete',
-    params: { userId }
+    params: { userId , assocId}
+  }) 
+}
+
+//用户申请加入社团
+export function applyAssoc(userId ,assocId) {
+  return request({
+    url: '/user/apply',
+    method: 'post',
+    params: { userId , assocId }
+  }) 
+}
+
+//用户申请加入活动
+export function applyEvent(userId ,eventId) {
+  return request({
+    url: '/user/applyEvent',
+    method: 'post',
+    params: { userId , eventId }
   }) 
 }

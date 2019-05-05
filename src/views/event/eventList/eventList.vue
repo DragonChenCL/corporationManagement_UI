@@ -126,7 +126,7 @@
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item label="支出：" :label-width="formLabelWidth" prop="exceptFunds">
+                  <el-form-item label="申请金额：" :label-width="formLabelWidth" prop="exceptFunds">
                     <el-input
                       v-model="Data.exceptFunds"
                       autocomplete="off"

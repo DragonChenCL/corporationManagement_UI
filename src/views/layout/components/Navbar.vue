@@ -12,7 +12,7 @@
         <!-- <i class="el-icon-caret-bottom"/> -->
       </div>
       <el-dropdown-menu slot="dropdown" class="user-dropdown">
-        <router-link class="inlineBlock" to="/">
+        <router-link class="inlineBlock" to="/dashboard/info">
           <el-dropdown-item>个人信息</el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>

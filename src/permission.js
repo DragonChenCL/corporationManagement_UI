@@ -12,12 +12,12 @@ function hasPermission(roles, permissionRoles) {
   return roles.some(role => permissionRoles.indexOf(role) >= 0)
 }
 
-const whiteList = ['/login'] // 不重定向白名单
+const whiteList = ['/login','/'] // 不重定向白名单
 router.beforeEach((to, from, next) => {
   NProgress.start()
   if (getToken()) {
     if (to.path === '/login') {
-      next({ path: '/' })
+      next({ path: '/dashboard/info' })
       NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
     } else {
       if (store.getters.roles.length === 0) {
@@ -33,7 +33,7 @@ router.beforeEach((to, from, next) => {
         }).catch((err) => {
           store.dispatch('FedLogOut').then(() => {
             Message.error(err || 'Verification failed, please login again')
-            next({ path: '/' })
+            next({ path: '/dashboard/info' })
           })
         })
       } else {
@@ -41,7 +41,14 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
-    if (whiteList.indexOf(to.path) !== -1) {
+    if (whiteList.indexOf(to.path) !== -1 || (to.path).indexOf('/stu/') >= 0) {
+      if((to.path).indexOf('/stu/userinfo/username=') >= 0){
+        if(localStorage.getItem("preToken") === "" || localStorage.getItem("preToken") === null){
+          Message.error("您还未登录！")
+          next({ path: '/stu/' })
+        }
+        next()
+      }
       next()
     } else {
       next(`/login?redirect=${to.path}`) // 否则全部重定向到登录页
