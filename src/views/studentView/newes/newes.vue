@@ -4,6 +4,17 @@
       <!-- <img src="../newes/img/社团之家.png" alt width="100%" height="100px"> -->
     </div>
     <div class="newes-main">
+      <div class="newes-category">
+        <indexTitle title="社团"/>
+        <el-button class="pan-btn" type="primary" @click="changeNews()" style="margin-top:10px">全部</el-button>
+        <div class="category" v-for="assoc in assocs" :key="assoc.associationId">
+          <el-button
+            class="pan-btn"
+            type="primary"
+            @click="changeNews(assoc.associationId)"
+          >{{assoc.assName}}</el-button>
+        </div>
+      </div>
       <div class="newes-assoc">
         <indexTitle title="新闻之家"/>
         <div class="newes">
@@ -42,17 +53,7 @@
           </div>
         </div>
       </div>
-      <div class="newes-category">
-        <indexTitle title="社团"/>
-        <el-button class="pan-btn" type="primary" @click="changeNews()" style="margin-top:10px">全部</el-button>
-        <div class="category" v-for="assoc in assocs" :key="assoc.associationId">
-          <el-button
-            class="pan-btn"
-            type="primary"
-            @click="changeNews(assoc.associationId)"
-          >{{assoc.assName}}</el-button>
-        </div>
-      </div>
+      
     </div>
   </div>
 </template>
@@ -76,12 +77,14 @@ export default {
       searchCondition: {
         currentPage: 1,
         pageSize: 100,
-        categoryId: ""
+        categoryId: "",
+        status:"1"
       },
       searchConditions: {
         currentPage: 1,
         pageSize: 100,
-        associationId: ""
+        associationId: "",
+        
       }
     };
   },

@@ -4,6 +4,56 @@
       <!-- <img src="../events/img/社团之家.png" alt width="100%" height="100px"> -->
     </div>
     <div class="events-main">
+      <div class="events-category">
+        <div class="assoc">
+          <indexTitle title="加入的社团"/>
+          <div class="assoc_detail" v-for="item in userInfo.userAssocs" :key="item.assocId">
+            <div class="assoc_name">
+              <router-link
+                tag="a"
+                :to="{path:'/stu/associations/detail',query:{id:item.assocId}}"
+              >{{item.assocName}}</router-link>
+            </div>
+            <div class="assoc_status">
+              <span v-if="item.status === '审核失败'" style="color:#F56C6C">{{item.status}}</span>
+              <span v-if="item.status === '待审核'" style="color:#E6A23C">{{item.status}}</span>
+            </div>
+            <div class="assoc_message">
+              <el-button
+                v-if="item.status === '审核失败'"
+                type="text"
+                @click="viewClick(item.message)"
+              >查看原因</el-button>
+              <el-button
+                v-if="item.status === '审核成功'"
+                type="text"
+                @click="exitAssoc(item.assocId,item.assocName)"
+              >退出社团</el-button>
+            </div>
+          </div>
+        </div>
+        <div class="event">
+          <indexTitle title="加入的活动"/>
+          <div class="assoc_detail" v-for="item in userInfo.userEvents" :key="item.id">
+            <div class="assoc_name">
+              <router-link
+                tag="a"
+                :to="{path:'/stu/events/detail',query:{id:item.eventId}}"
+              >{{item.eventName}}</router-link>
+            </div>
+            <div class="assoc_status">
+              <span v-if="item.status === '审核失败'" style="color:#F56C6C">{{item.status}}</span>
+              <span v-if="item.status === '待审核'" style="color:#E6A23C">{{item.status}}</span>
+            </div>
+            <div class="assoc_message" v-if="item.status === '审核失败'">
+              <el-button type="text" @click="viewClick(item.message)">查看原因</el-button>
+            </div>
+          </div>
+        </div>
+
+        <!-- <el-button class="pan-btn" type="primary" style="margin-top:10px" @change="applyIn()">申请加入</el-button>
+        <el-button class="pan-btn" type="primary" style="margin-top:10px;margin-left:-2px">提交评论</el-button>-->
+      </div>
       <div class="events-assoc">
         <indexTitle title="个人信息"/>
         <div class="events">
@@ -114,56 +164,7 @@
           </el-card>
         </div>
       </div>
-      <div class="events-category">
-        <div class="assoc">
-          <indexTitle title="加入的社团"/>
-          <div class="assoc_detail" v-for="item in userInfo.userAssocs" :key="item.assocId">
-            <div class="assoc_name">
-              <router-link
-                tag="a"
-                :to="{path:'/stu/associations/detail',query:{id:item.assocId}}"
-              >{{item.assocName}}</router-link>
-            </div>
-            <div class="assoc_status">
-              <span v-if="item.status === '审核失败'" style="color:#F56C6C">{{item.status}}</span>
-              <span v-if="item.status === '待审核'" style="color:#E6A23C">{{item.status}}</span>
-            </div>
-            <div class="assoc_message">
-              <el-button
-                v-if="item.status === '审核失败'"
-                type="text"
-                @click="viewClick(item.message)"
-              >查看原因</el-button>
-              <el-button
-                v-if="item.status === '审核成功'"
-                type="text"
-                @click="exitAssoc(item.assocId,item.assocName)"
-              >退出社团</el-button>
-            </div>
-          </div>
-        </div>
-        <div class="event">
-          <indexTitle title="加入的活动"/>
-          <div class="assoc_detail" v-for="item in userInfo.userEvents" :key="item.id">
-            <div class="assoc_name">
-              <router-link
-                tag="a"
-                :to="{path:'/stu/events/detail',query:{id:item.eventId}}"
-              >{{item.eventName}}</router-link>
-            </div>
-            <div class="assoc_status">
-              <span v-if="item.status === '审核失败'" style="color:#F56C6C">{{item.status}}</span>
-              <span v-if="item.status === '待审核'" style="color:#E6A23C">{{item.status}}</span>
-            </div>
-            <div class="assoc_message" v-if="item.status === '审核失败'">
-              <el-button type="text" @click="viewClick(item.message)">查看原因</el-button>
-            </div>
-          </div>
-        </div>
-
-        <!-- <el-button class="pan-btn" type="primary" style="margin-top:10px" @change="applyIn()">申请加入</el-button>
-        <el-button class="pan-btn" type="primary" style="margin-top:10px;margin-left:-2px">提交评论</el-button>-->
-      </div>
+      
     </div>
     <div class="info-list">
       <el-dialog
@@ -511,7 +512,9 @@ export default {
     changeInfo() {
       this.dialogFormVisible = true;
       this.Data = { ...this.userInfo };
-      this.getMyclasse(this.userInfo.collegeId);
+      if(this.userInfo.collegeId != null){
+         this.getMyclasse(this.userInfo.collegeId);
+      }
     },
     collegeChange(collegeId) {
       this.Data.myclassId = "";

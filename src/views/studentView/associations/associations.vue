@@ -4,6 +4,17 @@
       <!-- <img src="../associations/img/社团之家.png" alt width="100%" height="100px"> -->
     </div>
     <div class="associations-main">
+      <div class="associations-category">
+        <indexTitle title="社团分类"/>
+        <el-button class="pan-btn" type="primary" @click="changeAssoc()" style="margin-top:10px">全部</el-button>
+        <div class="category" v-for="category in categorys" :key="category.categoryId">
+          <el-button
+            class="pan-btn"
+            type="primary"
+            @click="changeAssoc(category.categoryId)"
+          >{{category.categoryName}}</el-button>
+        </div>
+      </div>
       <div class="associations-assoc">
         <indexTitle title="社团之家"/>
         <div class="associations">
@@ -18,17 +29,7 @@
           </el-card>
         </div>
       </div>
-      <div class="associations-category">
-        <indexTitle title="社团分类"/>
-        <el-button class="pan-btn" type="primary" @click="changeAssoc()" style="margin-top:10px">全部</el-button>
-        <div class="category" v-for="category in categorys" :key="category.categoryId">
-          <el-button
-            class="pan-btn"
-            type="primary"
-            @click="changeAssoc(category.categoryId)"
-          >{{category.categoryName}}</el-button>
-        </div>
-      </div>
+      
     </div>
   </div>
 </template>
@@ -49,7 +50,8 @@ export default {
       searchCondition: {
         currentPage: 1,
         pageSize: 100,
-        categoryId: ""
+        categoryId: "",
+        status:"1"
       }
     };
   },

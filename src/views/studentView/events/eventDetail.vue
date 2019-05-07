@@ -4,6 +4,26 @@
       <!-- <img src="../events/img/社团之家.png" alt width="100%" height="100px"> -->
     </div>
     <div class="events-main">
+      <div class="events-category">
+        <indexTitle title="操作"/>
+        <el-button class="pan-btn" type="primary" style="margin-top:10px" @click="applyIn()">申请加入</el-button>
+        <el-button
+          class="pan-btn"
+          type="primary"
+          style="margin-top:10px;margin-left:-2px"
+          @click="createApply()"
+        >提交评论</el-button>
+        <div class="apply" v-for="apply in applys" :key="apply.applyId">
+          <div class="main">
+            <div class="main_name">{{apply.realName}}：</div>
+            <div class="main_content">{{apply.status}}</div>
+          </div>
+          <div class="time">{{apply.applyDate}}</div>
+        </div>
+        <div class="create_apply">
+          <el-input v-model="applyForm.status" type="textarea" :rows="2" style="width:90%"></el-input>
+        </div>
+      </div>
       <div class="events-assoc">
         <indexTitle title="活动详情"/>
         <div class="events">
@@ -57,26 +77,7 @@
           </el-card>
         </div>
       </div>
-      <div class="events-category">
-        <indexTitle title="操作"/>
-        <el-button class="pan-btn" type="primary" style="margin-top:10px" @click="applyIn()">申请加入</el-button>
-        <el-button
-          class="pan-btn"
-          type="primary"
-          style="margin-top:10px;margin-left:-2px"
-          @click="createApply()"
-        >提交评论</el-button>
-        <div class="apply" v-for="apply in applys" :key="apply.applyId">
-          <div class="main">
-            <div class="main_name">{{apply.realName}}：</div>
-            <div class="main_content">{{apply.status}}</div>
-          </div>
-          <div class="time">{{apply.applyDate}}</div>
-        </div>
-        <div class="create_apply">
-          <el-input v-model="applyForm.status" type="textarea" :rows="2" style="width:90%"></el-input>
-        </div>
-      </div>
+      
     </div>
   </div>
 </template>

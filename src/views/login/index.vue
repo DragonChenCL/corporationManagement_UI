@@ -8,7 +8,7 @@
       auto-complete="on"
       label-position="left"
     >
-      <h3 class="title">龙团管理系统</h3>
+      <h3 class="title">社团管理系统</h3>
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user"/>
@@ -43,7 +43,7 @@
           type="primary"
           style="width:100%;"
           @click.native.prevent="handleLogin"
-        >Sign in</el-button>
+        >登录</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -74,7 +74,7 @@ export default {
     };
     return {
       loginForm: {
-        username: "1530107202",
+        username: "1530107230",
         password: "chenlong"
       },
       loginRules: {

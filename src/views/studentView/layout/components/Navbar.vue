@@ -61,9 +61,11 @@
         :visible.sync="loginVisiable"
         top="6vh"
         :close-on-click-modal="closeOn"
+        style="height:800px"
       >
         <el-form :model="loginform" class="login_form">
-          <el-form-item>
+          <div style="width:70%;margin:auto">
+             <el-form-item>
             <MDinput
               style="background-color:transparent"
               v-model="loginform.username"
@@ -82,10 +84,23 @@
               placeholder="请填写密码"
             >密码</MDinput>
           </el-form-item>
+          <el-form-item v-if="registerVisible">
+            <MDinput
+              style="background-color:transparent"
+              v-model="loginform.nPassword"
+              type="password"
+              :maxlength="15"
+              required
+              placeholder="请填写密码"
+            >确认密码</MDinput>
+          </el-form-item>
+          </div>
+         
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button class="pan-btn" type="primary" @click="loginC()">登录</el-button>
-          <el-button class="pan-btn" type="primary" @click="loginVisiable = false">取消</el-button>
+          <el-button v-if="loinVisible" class="pan-btn" type="primary" @click="registerTo()">注册</el-button>
+          <el-button v-if="registerVisible" style="width:100px" class="pan-btn" type="primary" @click="registerNow()">立即注册</el-button>
+          <el-button v-if="loinVisible" class="pan-btn" type="primary" @click="loginC()">登录</el-button>
         </div>
       </el-dialog>
     </div>
@@ -94,15 +109,19 @@
 
 <script>
 import MDinput from "@/components/MDinput";
-import { login, getInfo } from "@/api/login";
+import { login, getInfo,register } from "@/api/login";
 import { Message } from "element-ui";
 
 export default {
   data() {
     return {
+      loinVisible:true,
+      registerVisible:false,
       loginform: {
         username: "",
-        password: ""
+        password: "",
+        nPassword:"",
+        birthday:""
       },
       username:"",
       loginButtonVisiable: true,
@@ -124,7 +143,41 @@ export default {
   },
   components: {},
   computed: {},
+  //时间过滤器
+  filters: {
+    formatDate(time) {
+      return parseTime(time, "{y}年{m}月{d}");
+    }
+  },
   methods: {
+    registerNow(){
+      if(this.loginform.password !== this.loginform.nPassword){
+        this.$message.error("两次密码不一致！")
+      }
+      else if(this.loginform.username == null || this.loginform.password ==null){
+        this.$message.error("用户名或密码不能为空！")
+      }
+       else if(this.loginform.username == " " || this.loginform.password ==" "){
+        this.$message.error("用户名或密码不能为空！")
+      }else{
+        this.loginform.birthday = new Date();
+        register(this.loginform).then(response =>{
+          this.$message.success(response.message)
+          this.loginVisiable = false;
+          this.registerVisible = false;
+          this.loinVisible = true;
+          this.loginform = {}
+        }).catch(error =>{
+          this.$message.error("注册失败！")
+        })
+      }
+    },
+    registerTo(){
+      this.registerVisible = true;
+      this.loinVisible = false;
+      this.title = "注 册";
+      this.loginform = {}
+    },
     logout(){
       localStorage.removeItem("preToken")
       localStorage.removeItem("preName")
@@ -175,6 +228,8 @@ export default {
       })
     },
     loginClick() {
+      this.registerVisible = false;
+      this.loinVisible = true;
       this.loginform = {}
       this.loginVisiable = true;
     },
@@ -190,6 +245,9 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+/deep/[data-v-770a06ed] .el-dialog{
+  height: 350px
+}
 .welcome{
   margin:10px 10px;
   font-size: 16px;
@@ -222,12 +280,12 @@ export default {
   }
 /deep/.material-input__component .material-input[data-v-6bb35d14] {
   background: none;
-  color: #f56c6c;
+  color: black;
   text-indent: 0px;
   border-bottom: 1px solid #e0e0e0;
 }
 /deep/.el-dialog__title {
-  color: #409eff;
+  color: black;
   font-size: 22px;
 }
 /deep/.el-dialog__header {
@@ -245,7 +303,7 @@ export default {
 /deep/.el-dialog {
   width: 500px;
   height: 300px;
-  background: url("../components/img/login_back.gif") no-repeat;
+  background: url("../components/img/login_back.jpeg") no-repeat;
   background-size: 100% 100%;
 }
 .item {
@@ -268,7 +326,7 @@ export default {
   &:hover {
     background-color: transparent;
     // background: #fff;
-    color: #409eff;
+    color: black;
     &:before,
     &:after {
       width: 100%;

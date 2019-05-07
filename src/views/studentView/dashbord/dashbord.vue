@@ -14,6 +14,13 @@
       </el-carousel>
     </div>
     <div class="mainContent">
+       <div class="news">
+        <indexTitle title="新闻"/>
+        <div v-for="news in newes" :key="news.newsId" class="oneAssoc">
+          <div class="name"><router-link tag="a" :to="{path:'/stu/newes/detail',query:{id:news.newsId}}">{{news.newsTitle}}</router-link></div>
+          <div class="date">{{news.publishDate | formatDate}}</div>
+        </div>
+      </div>
       <div class="assoc">
         <indexTitle title="社团"/>
          <!-- 路由跳转 -->
@@ -24,13 +31,7 @@
         </div>
         <!-- </router-link> -->
       </div>
-      <div class="news">
-        <indexTitle title="新闻"/>
-        <div v-for="news in newes" :key="news.newsId" class="oneAssoc">
-          <div class="name"><router-link tag="a" :to="{path:'/stu/newes/detail',query:{id:news.newsId}}">{{news.newsTitle}}</router-link></div>
-          <div class="date">{{news.publishDate | formatDate}}</div>
-        </div>
-      </div>
+     
     </div>
   </div>
 </template>
@@ -49,6 +50,7 @@ export default {
       searchCondition: {
         currentPage: 1,
         pageSize: 10,
+        status:"1"
       }
     };
   },
@@ -126,7 +128,8 @@ export default {
   margin-top: 5px;
 }
 .assoc {
-  width: 49%;
+  width: 30%;
+  margin-left: 210px
 }
 .news {
   margin-left: 2%;

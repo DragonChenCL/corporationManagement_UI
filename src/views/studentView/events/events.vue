@@ -4,6 +4,17 @@
       <!-- <img src="../events/img/社团之家.png" alt width="100%" height="100px"> -->
     </div>
     <div class="events-main">
+       <div class="events-category">
+        <indexTitle title="社团"/>
+        <el-button class="pan-btn" type="primary" @click="changeEvents()" style="margin-top:10px">全部</el-button>
+        <div class="category" v-for="assoc in assocs" :key="assoc.associationId">
+          <el-button
+            class="pan-btn"
+            type="primary"
+            @click="changeEvents(assoc.associationId)"
+          >{{assoc.assName}}</el-button>
+        </div>
+      </div>
       <div class="events-assoc">
         <indexTitle title="活动之家"/>
         <div class="events">
@@ -42,17 +53,7 @@
           </div>
         </div>
       </div>
-      <div class="events-category">
-        <indexTitle title="社团"/>
-        <el-button class="pan-btn" type="primary" @click="changeEvents()" style="margin-top:10px">全部</el-button>
-        <div class="category" v-for="assoc in assocs" :key="assoc.associationId">
-          <el-button
-            class="pan-btn"
-            type="primary"
-            @click="changeEvents(assoc.associationId)"
-          >{{assoc.assName}}</el-button>
-        </div>
-      </div>
+     
     </div>
   </div>
 </template>
@@ -77,6 +78,7 @@ export default {
       searchCondition: {
         currentPage: 1,
         pageSize: 100,
+        status:"1"
       },
       searchConditions: {
         currentPage: 1,

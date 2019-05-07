@@ -1,5 +1,5 @@
 <template>
-  <span :class="className" class="link--mallki" href="#">
+  <span :class="className"  href="#">
     {{ text }}
     <span :data-letters="text"/>
     <span :data-letters="text"/>

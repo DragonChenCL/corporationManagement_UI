@@ -4,9 +4,16 @@
       <!-- <img src="../associations/img/社团之家.png" alt width="100%" height="100px"> -->
     </div>
     <div class="associations-main">
+       <div class="associations-category">
+        <indexTitle title="目录"/>
+        <el-button class="pan-btn" type="primary"  style="margin-top:10px;margin-left:10px" @click="c1()">关于我们</el-button>
+        <el-button class="pan-btn" type="primary"  style="margin-top:10px" @click="c2()">社联章程</el-button>
+        <el-button class="pan-btn" type="primary"  style="margin-top:10px" @click="c3()">联系方式</el-button>
+      </div>
       <div class="associations-assoc">
         <div style="width:80%;margin:auto">
-           <h2 id="aboutme">关于我们</h2>
+          <div v-if="s1">
+            <h2 id="aboutme">关于我们</h2>
            <hr>
         <p style="text-indent:2em;font-size:20px">
           社团网申系统主要为学生提供社团，学生可通过该系统查看了解社团情况，并可通过该系统申请加入社。
@@ -16,7 +23,9 @@
           使各社团能够将全部精力投入到工作中，同时社联会集中力量对优势活动、精品活动展开全方位立体式宣传。
           在管理上，社联以社团工作更加完整化、规范化为目的，建立一套相对完善的管理体制，实施规范化管理。
         </p>
-        <h2 id="joinus">社联章程</h2>
+          </div>
+          <div v-if="s2">
+            <h2 id="joinus">社联章程</h2>
         <hr>
         <h4>第一章 总则</h4>
 
@@ -37,20 +46,18 @@
           科技创新，文化体育等丰富多彩的活动，按照自我教育、
           自我管理、自我服务的要求，突出思想性、学术性、知识性、趣味性。提高大学生综合素质， 为同学的全面成才服务。
         </p>
-        <h2 id="address">联系方式</h2>
+          </div>
+          <div v-if="s3">
+             <h2 id="address">联系方式</h2>
         <hr>
         <p style="font-size:20px">地址：大学生社团联合会</p>
         <p style="font-size:20px">E-mail：chenlong_qrr@163.com</p>
         <p style="font-size:20px">电话：010-88888888</p>
         <p style="font-size:20px">宗旨：服务·指导·监督</p>
+          </div>
         </div>
       </div>
-      <div class="associations-category">
-        <indexTitle title="目录"/>
-        <el-button class="pan-btn" type="primary"  style="margin-top:10px;margin-left:10px">关于我们</el-button>
-        <el-button class="pan-btn" type="primary"  style="margin-top:10px">社联章程</el-button>
-        <el-button class="pan-btn" type="primary"  style="margin-top:10px">联系方式</el-button>
-      </div>
+     
     </div>
   </div>
 </template>
@@ -63,6 +70,9 @@ import { Message } from "element-ui";
 export default {
   data() {
     return {
+      s1:true,
+      s2:false,
+      s3:false,
       assocs: [],
       categorys: [],
       searchCondition: {
@@ -78,6 +88,21 @@ export default {
   },
   created() {},
   methods: {
+    c1(){
+      this.s1 = true;
+      this.s2 = false;
+      this.s3 = false;
+    },
+    c2(){
+       this.s1 = false;
+      this.s2 = true;
+      this.s3 = false;
+    },
+    c3(){
+       this.s1 = false;
+      this.s2 = false;
+      this.s3 = true;
+    },
     tiaozhuan(){
       location = '#joinus';
     }

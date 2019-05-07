@@ -37,6 +37,15 @@ export function updateStatus(userStatusForm) {
   }) 
 }
 
+//注册
+export function register(loginForm) {
+  return request({
+    url: '/auth/register',
+    method: 'post',
+    data: loginForm
+  }) 
+}
+
 export function logout() {
   return request({
     url: '/auth/logout',

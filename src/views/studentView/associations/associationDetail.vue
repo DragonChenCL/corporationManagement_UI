@@ -4,6 +4,10 @@
       <!-- <img src="../assoc/img/社团之家.png" alt width="100%" height="100px"> -->
     </div>
     <div class="assoc-main">
+       <div class="assoc-category">
+        <indexTitle title="操作"/>
+        <el-button class="pan-btn" type="primary" style="margin-top:10px" @click="applyIn()">申请加入</el-button>
+      </div>
       <div class="assoc-assoc">
         <indexTitle title="社团详情"/>
         <div class="assoc">
@@ -63,10 +67,7 @@
           </el-card>
         </div>
       </div>
-      <div class="assoc-category">
-        <indexTitle title="操作"/>
-        <el-button class="pan-btn" type="primary" style="margin-top:10px" @click="applyIn()">申请加入</el-button>
-      </div>
+     
     </div>
   </div>
 </template>
