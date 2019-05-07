@@ -228,6 +228,7 @@ export default {
       })
     },
     loginClick() {
+      this.title = "登 录"
       this.registerVisible = false;
       this.loinVisible = true;
       this.loginform = {}

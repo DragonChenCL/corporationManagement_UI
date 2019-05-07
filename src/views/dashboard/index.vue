@@ -61,9 +61,11 @@
           <div class="one-line">
             <el-row>
               <el-col :span="12">
-                <div class="grid-content bg-purple">
-                  所属社团 ：
-                  <mallki class-name="mallki-text" :text="PeronForm.userAssocs[0].assocName"/>
+                <div class="grid-content bg-purple-light">
+                  <div class="grid-content bg-purple">
+                    职位 ：
+                    <mallki class-name="mallki-text" :text="PeronForm.position"/>
+                  </div>
                 </div>
               </el-col>
               <el-col :span="12">
@@ -95,11 +97,11 @@
             </el-row>
           </div>
           <div class="one-line">
-            <el-row>
+            <el-row v-if="adminVisible">
               <el-col :span="12">
                 <div class="grid-content bg-purple">
-                  qq号 ：
-                  <mallki class-name="mallki-text" :text="PeronForm.qq"/>
+                  我的班级 ：
+                  <mallki class-name="mallki-text" :text="PeronForm.myClass"/>
                 </div>
               </el-col>
               <el-col :span="12">
@@ -114,10 +116,10 @@
           </div>
           <div class="one-line">
             <el-row>
-              <el-col :span="12">
+               <el-col :span="12">
                 <div class="grid-content bg-purple">
-                  我的班级 ：
-                  <mallki class-name="mallki-text" :text="PeronForm.myClass"/>
+                  qq号 ：
+                  <mallki class-name="mallki-text" :text="PeronForm.qq"/>
                 </div>
               </el-col>
               <el-col :span="12">
@@ -139,11 +141,14 @@
                 </div>
               </el-col>
               <el-col :span="12">
-                <div class="grid-content bg-purple-light">
-                  <div class="grid-content bg-purple">
-                    职位 ：
-                    <mallki class-name="mallki-text" :text="PeronForm.position"/>
-                  </div>
+                <div class="grid-content bg-purple" v-if="adminVisible">
+                  所属社团 ：
+                  <mallki class-name="mallki-text" :text="PeronForm.userAssocs[0].assocName"/>
+                </div>
+              </el-col>
+               <el-col :span="12">
+                <div class="grid-content bg-purple" v-if="!adminVisible">
+                  &nbsp;
                 </div>
               </el-col>
             </el-row>
@@ -174,7 +179,7 @@
           <el-form-item label="email" :label-width="formLabelWidth" prop="email">
             <el-input v-model="PeronForm.email" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="学院" :label-width="formLabelWidth" prop="collegeId" required>
+          <el-form-item v-if="adminVisible" label="学院" :label-width="formLabelWidth" prop="collegeId" required>
             <el-select
               v-model="PeronForm.collegeId"
               placeholder="请选择学院"
@@ -189,7 +194,7 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="班级" :label-width="formLabelWidth" prop="myclassId">
+          <el-form-item v-if="adminVisible" label="班级" :label-width="formLabelWidth" prop="myclassId">
             <el-select v-model="PeronForm.myclassId" class="box"  @change="myclassChange(PeronForm.myclassId)">
               <el-option
                 v-for="myClass in myClasses"
@@ -256,6 +261,7 @@ export default {
       dialogTableVisible: false,
       dialogFormVisible: false,
       formLabelWidth: "80px",
+      adminVisible:true,
       PeronForm: {
         userId: "",
         realName: "",
@@ -426,6 +432,11 @@ export default {
           const data = res.result;
           this.PeronForm = data;
           this.PeronForm.birthday = parseTime(data.birthday, "{y}-{m}-{d}");
+          if(this.PeronForm.position == "校社联负责人"){
+            this.adminVisible = false;
+          }else{
+            this.adminVisible = true;
+          }
         })
         .catch(err => {
           Message({
