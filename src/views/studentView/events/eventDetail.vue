@@ -7,12 +7,34 @@
       <div class="events-category">
         <indexTitle title="操作"/>
         <el-button class="pan-btn" type="primary" style="margin-top:10px" @click="applyIn()">申请加入</el-button>
+        <el-button class="pan-btn" type="primary" style="margin-top:10px;margin-left:-3px" @click="lookPerson()">查看人员</el-button>
         <el-button
           class="pan-btn"
           type="primary"
           style="margin-top:10px;margin-left:-2px"
           @click="createApply()"
         >提交评论</el-button>
+
+        <el-dialog
+          :title="title"
+          :visible.sync="lookPersonVisible"
+          top="6vh"
+          :close-on-click-modal="closeOn"
+          width="60%"
+        >
+           <el-table :data="showData" style="width: 100%" size="small" border stripe>
+            <el-table-column align="center" prop="username" label="登录名"></el-table-column>
+            <el-table-column align="center" prop="realName" label="真实姓名"></el-table-column>
+            <el-table-column align="center" prop="college" label="学院"></el-table-column>
+            <el-table-column align="center" prop="myClass" label="班级"></el-table-column>
+            <el-table-column align="center" prop="position" label="职位"></el-table-column>
+          </el-table>
+         <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="lookPersonVisible = false">取消</el-button>
+          </div>
+        </el-dialog>
+
+
         <div class="apply" v-for="apply in applys" :key="apply.applyId">
           <div class="main">
             <div class="main_name">{{apply.realName}}：</div>
@@ -91,10 +113,13 @@ import { applyEvent } from "@/api/member";
 import { createApply } from "@/api/apply";
 import Mallki from "@/components/TextHoverEffect/Mallki";
 import { Message } from "element-ui";
+import { userApplyEvent } from "@/api/event";
 
 export default {
   data() {
     return {
+      showData:[],
+      lookPersonVisible:false,
       applyForm: {
         userId: "",
         eventId: "",
@@ -120,7 +145,8 @@ export default {
       searchCondition: {
         currentPage: 1,
         pageSize: 100,
-        eventName: ""
+        eventName: "",
+        status:"审核成功"
       }
     };
   },
@@ -139,6 +165,22 @@ export default {
     this.getEventDetail();
   },
   methods: {
+    lookPerson(){
+      this.showData = [],
+      this.lookPersonVisible = true,
+       userApplyEvent(this.searchCondition)
+        .then(response => {
+          this.showData = response.result.contents;
+          this.total = response.result.totalElements;
+        })
+        .catch(error => {
+          Message({
+            message: "查询失败！",
+            type: "error",
+            duration: 3 * 1000
+          });
+        });
+    },
     applyIn() {
       const userId = localStorage.getItem("preUserId");
       if (userId === "" || userId === null) {

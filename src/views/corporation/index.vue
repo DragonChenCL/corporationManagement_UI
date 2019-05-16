@@ -119,13 +119,13 @@
       >
         <el-form :model="association" ref="association" :rules="Rules">
           <el-form-item label="社团名称" :label-width="formLabelWidth" prop="assName">
-            <el-input v-model="association.assName" autocomplete="off"></el-input>
+            <el-input v-model="association.assName" autocomplete="off" disabled ></el-input>
           </el-form-item>
           <el-form-item label="社团地址" :label-width="formLabelWidth" prop="address">
             <el-input v-model="association.address" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="社团分类" :label-width="formLabelWidth" prop="category" >
-            <el-select v-model="association.category" autocomplete="off" style="width:100%">
+            <el-select v-model="association.category" autocomplete="off" style="width:100%" disabled>
               <el-option
                 v-for="category in categorys"
                 :key="category.categoryId"
@@ -135,7 +135,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="负责人" :label-width="formLabelWidth" prop="responsiblePerson">
-            <el-input v-model="association.responsiblePerson" autocomplete="off"></el-input>
+            <el-input v-model="association.responsiblePerson" autocomplete="off" disabled></el-input>
           </el-form-item>
           <el-form-item label="电话号码" :label-width="formLabelWidth" prop="phoneNumber">
             <el-input v-model="association.phoneNumber" autocomplete="off"></el-input>

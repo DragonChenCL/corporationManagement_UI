@@ -7,7 +7,28 @@
        <div class="assoc-category">
         <indexTitle title="操作"/>
         <el-button class="pan-btn" type="primary" style="margin-top:10px" @click="applyIn()">申请加入</el-button>
+        <el-button class="pan-btn" type="primary" style="margin-top:10px;margin-left:-3px" @click="lookPerson()">查看人员</el-button>
       </div>
+
+        <el-dialog
+          :title="title"
+          :visible.sync="lookPersonVisible"
+          top="6vh"
+          :close-on-click-modal="closeOn"
+          width="60%"
+        >
+           <el-table :data="showData" style="width: 100%" size="small" border stripe>
+            <el-table-column align="center" prop="username" label="登录名"></el-table-column>
+            <el-table-column align="center" prop="realName" label="真实姓名"></el-table-column>
+            <el-table-column align="center" prop="college" label="学院"></el-table-column>
+            <el-table-column align="center" prop="myClass" label="班级"></el-table-column>
+            <el-table-column align="center" prop="position" label="职位"></el-table-column>
+          </el-table>
+         <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="lookPersonVisible = false">取消</el-button>
+          </div>
+        </el-dialog>
+        
       <div class="assoc-assoc">
         <indexTitle title="社团详情"/>
         <div class="assoc">
@@ -80,10 +101,13 @@ import { getAssociationInfo } from "@/api/association";
 import { applyAssoc } from "@/api/member";
 import Mallki from "@/components/TextHoverEffect/Mallki";
 import { Message } from "element-ui";
+import { getMemberList } from "@/api/member";
 
 export default {
   data() {
     return {
+      showData:[],
+      lookPersonVisible:false,
       applyForm: {
         userId: "",
         eventId: "",
@@ -111,7 +135,8 @@ export default {
       searchCondition: {
         currentPage: 1,
         pageSize: 100,
-        eventName: ""
+        eventName: "",
+        status:"审核成功"
       }
     };
   },
@@ -130,6 +155,21 @@ export default {
     this.getAssociationInfo();
   },
   methods: {
+    lookPerson(){
+      this.showData = [],
+      this.lookPersonVisible = true,
+      getMemberList(this.searchCondition)
+        .then(response => {
+          this.showData = response.result.contents;
+        })
+        .catch(error => {
+          Message({
+            message: "查询失败！",
+            type: "error",
+            duration: 3 * 1000
+          });
+        });
+    },
     applyIn() {
       const userId = localStorage.getItem("preUserId");
       if (userId === "" || userId === null) {
@@ -158,6 +198,7 @@ export default {
         .then(res => {
           this.assocDetail = { ...res.result };
           this.assocDetail.logo = process.env.BASE_API + this.assocDetail.logo;
+          this.searchCondition.eventName = res.result.eventName;
         })
         .catch(err => {
           this.$message({
