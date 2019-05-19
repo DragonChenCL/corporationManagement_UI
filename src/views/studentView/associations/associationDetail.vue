@@ -135,7 +135,7 @@ export default {
       searchCondition: {
         currentPage: 1,
         pageSize: 100,
-        eventName: "",
+        associationId: "",
         status:"审核成功"
       }
     };
@@ -198,7 +198,7 @@ export default {
         .then(res => {
           this.assocDetail = { ...res.result };
           this.assocDetail.logo = process.env.BASE_API + this.assocDetail.logo;
-          this.searchCondition.eventName = res.result.eventName;
+          this.searchCondition.associationId = res.result.associationId;
         })
         .catch(err => {
           this.$message({

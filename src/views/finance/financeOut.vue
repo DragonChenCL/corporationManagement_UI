@@ -7,16 +7,16 @@
           <el-form :model="searchConditions" label-width="90px">
             <el-row>
               <el-col :span="6">
-                <el-form-item label=" 收入理由：">
-                  <el-input v-model="searchConditions.reason" placeholder="请填写收入理由" class="input"></el-input>
+                <el-form-item label=" 支出理由：">
+                  <el-input v-model="searchConditions.reason" placeholder="请填写支出理由" class="input"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="7">
-                <el-form-item label="收入时间：">
+                <el-form-item label="支出时间：">
                   <el-date-picker
                     v-model="searchConditions.startDate"
                     clearable
-                    placeholder="请选择收入时间"
+                    placeholder="请选择支出时间"
                     class="input"
                     format="yyyy-MM-dd"
                     value-format="yyyy-MM-dd"
@@ -50,19 +50,19 @@
               </el-form-item>
               <el-row>
                 <el-col :span="20">
-                  <el-form-item label="收入理由：" :label-width="formLabelWidth" prop="reason">
+                  <el-form-item label="支出理由：" :label-width="formLabelWidth" prop="reason">
                     <el-input
                       v-model="Data.reason"
                       class="diaInput"
                       :disabled="disabled"
-                      placeholder="请输入收入理由"
+                      placeholder="请输入支出理由"
                     ></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="20">
-                  <el-form-item label="收入时间：" :label-width="formLabelWidth" prop="startDate">
+                  <el-form-item label="支出时间：" :label-width="formLabelWidth" prop="startDate">
                     <el-date-picker
                       v-model="Data.startDate"
                       autocomplete="off"
@@ -70,14 +70,14 @@
                       :disabled="disabled"
                       format="yyyy-MM-dd"
                       value-format="yyyy-MM-dd"
-                      placeholder="请选择收入时间"
+                      placeholder="请选择支出时间"
                     ></el-date-picker>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="20">
-                  <el-form-item label="收入金额：" :label-width="formLabelWidth" prop="money">
+                  <el-form-item label="支出金额：" :label-width="formLabelWidth" prop="money">
                     <el-input
                       v-model="Data.money"
                       autocomplete="off"
@@ -100,14 +100,14 @@
           </div>
           <div class="list">
             <el-table :data="showData" style="width: 100%" size="small" border stripe>
-              <el-table-column align="center" prop="reason" label="收入理由"></el-table-column>
-              <el-table-column align="center" prop="startDate" label="收入时间">
+              <el-table-column align="center" prop="reason" label="支出理由"></el-table-column>
+              <el-table-column align="center" prop="startDate" label="支出时间">
                 <template slot-scope="scope">
                   <!-- 使用时间过滤器 -->
                   <div>{{scope.row.startDate | formatDate}}</div>
                 </template>
               </el-table-column>
-              <el-table-column align="center" prop="money" label="收入金额"></el-table-column>
+              <el-table-column align="center" prop="money" label="支出金额"></el-table-column>
               <el-table-column align="center" label="操作" min-width="90px" fixed="right">
                 <template slot-scope="scope">
                   <el-button
